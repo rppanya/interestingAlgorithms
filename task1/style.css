@@ -1,0 +1,22 @@
+body {
+    background: url("img/task1background.jpg");
+    font-family: Lucida Console, fantasy;
+    font-size: 10px;
+}
+.data {
+    background-color: #fff9f6;
+    position: absolute;
+    right: 50px;
+    top: 50px;
+    width: 300px;
+    height: 400px;
+    border-radius: 20px;
+}
+.input-data {
+    display: inline-block;
+}
+
+.point {
+    width: 50px;
+    height: 30px;
+}
