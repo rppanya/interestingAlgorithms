@@ -1,5 +1,6 @@
 body {
-    background: url("img/task1background.jpg");
+    background: url("img/task1background.jpg") no-repeat center center fixed;
+    background-size: cover;
     font-family: Lucida Console, fantasy;
     font-size: 10px;
 }
@@ -15,8 +16,14 @@ body {
 .input-data {
     display: inline-block;
 }
-
 .point {
     width: 50px;
     height: 30px;
+}
+table td {
+    border: 1px solid black;
+    padding: 20px;
+}
+#elem {
+
 }
