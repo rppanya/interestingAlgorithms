@@ -1,0 +1,13 @@
+body {
+    background-color: #3a91bd;
+    font-family: Tahoma, serif;
+    font-size: 45px;
+}
+
+.title {
+    color: whitesmoke;
+}
+
+.card {
+    width: 400px;
+}
