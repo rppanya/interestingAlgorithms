@@ -1,25 +1,70 @@
+html, body {
+    height: 100%;
+}
+
 body {
-    background-color: #3a91bd;
-    font-family: Tahoma, serif;
-    font-size: 25px;
+    background-color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 20px 50px;
+    font-size: 1.2rem;
+    position: relative;
+    margin: 32px;
+}
+
+.allBtn {
+    color: #000;
+}
+
+.allBtn::after, .allBtn::before {
+    border: 3px solid #000;
+    content: "";
+    position: absolute;
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    transition: transform 0.3s ease;
+}
+
+.allBtn:hover::after {
+    transform: translate(-5px, -5px);
+}
+
+.allBtn:hover::before {
+    transform: translate(5px, 5px);
 }
 
 .title {
-    color: whitesmoke;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px;
 }
 
-.card {
-    width: 400px;
-}
-
-.links {
-    text-align: center;
-    background-color: #00ffff;
-    height: 100px;
-    width: 100px;
-}
-
-.list {
-    color: white;
-    margin: 0 400px;
-}
