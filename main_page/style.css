@@ -1,7 +1,7 @@
 body {
     background-color: #3a91bd;
     font-family: Tahoma, serif;
-    font-size: 45px;
+    font-size: 25px;
 }
 
 .title {
@@ -10,4 +10,16 @@ body {
 
 .card {
     width: 400px;
+}
+
+.links {
+    text-align: center;
+    background-color: #00ffff;
+    height: 100px;
+    width: 100px;
+}
+
+.list {
+    color: white;
+    margin: 0 400px;
 }
