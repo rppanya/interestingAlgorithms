@@ -24,6 +24,15 @@ table td {
     border: 1px solid black;
     padding: 20px;
 }
-#elem {
-
+#table {
+    background-color: #fff9f6;
+    opacity: 20%;
+    position: relative;
+    width: 75%;
+    height: 800px;
+}
+table {
+    background: url("img/2fd71aac05635a2d364d73497922604c.png");
+    position: relative;
+    margin: auto;
 }

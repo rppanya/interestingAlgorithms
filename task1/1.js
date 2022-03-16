@@ -1,11 +1,16 @@
-var elem = document.querySelector('#table');
-createTable(elem, 3, 5);
-function createTable(parent, cols, rows) {
-    var table = document.createElement('table');
-    for (var i=0; i<rows; i++) {
-        var tr = document.createElement('tr')
-        for (var j=0; j<cols; j++) {
-            var td = document.createElement('td')
+const elem = document.querySelector('#table');
+
+function createTable(parent, n) {
+    var fc = parent.firstChild;
+    while(fc) {
+        parent.removeChild(fc);
+        fc = parent.firstChild;
+    }
+    const table = document.createElement('table');
+    for (let i=0; i<n; i++) {
+        const tr = document.createElement('tr')
+        for (let j=0; j<n; j++) {
+            const td = document.createElement('td')
             table.appendChild(td);
         }
         table.appendChild(tr);
