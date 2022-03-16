@@ -6,6 +6,8 @@ body {
     background-color: white;
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
+    background-image: url(https://cdn.dribbble.com/users/45782/screenshots/11304218/media/314bfdb8d30e516a763ae5b33e173f9e.jpg);
+    background-size: cover;
 }
 
 * {
