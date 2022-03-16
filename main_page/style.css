@@ -31,9 +31,9 @@ body {
 .btn {
     text-decoration: none;
     padding: 20px 50px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     position: relative;
-    margin: 33px;
+    margin: 30px;
 }
 
 .allBtn {
@@ -62,14 +62,17 @@ body {
 
 .title {
     color: #000;
+    margin: 33px;
+    font-size: 1.8rem;
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
     font-family: 'Poppins', sans-serif;
     font-weight: 400;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 15px;
-    position: absolute;
-    width: calc(100% - 6px);
-    height: calc(100% - 900px);
+    position: fixed;
+    text-align: center;
+    top: 0;
 }
 
