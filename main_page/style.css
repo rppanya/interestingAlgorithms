@@ -27,17 +27,20 @@ body {
     padding: 15px 30px;
     position: relative;
     margin: 25px;
-    color: #000;
-    border: 2px solid black;
+    background-color: white;
+    color: #155799;
+    border: 2px solid #155799;
     border-radius: 1em;
     transition-duration: 0.4s; /*speed of the "hover" effect*/
 }
 
-.btn:hover {
+.btn:hover { /*change the style of a button when you move the mouse over it*/
     transform: translateY(-0.25em);
     box-shadow: 0 0.5em 0.5em -0.4em;
-    background-color: #e0876a;
+    background-color: #155799;
     color: white;
+    border: 2px solid white;
+    border-radius: 1em;
 }
 
 
