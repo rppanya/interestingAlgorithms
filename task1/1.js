@@ -13,7 +13,7 @@ function createTable(parent, n) {
             const td = document.createElement('td')
             td.id = j+" "+i;
             table.appendChild(td);
-            td.addEventListener("click",function(event){
+            td.addEventListener("click",function(){
                 barriers(td);
             });
         }
