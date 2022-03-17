@@ -1,4 +1,4 @@
-const elem = document.querySelector('#table');
+const elem = document.getElementById('table');
 
 function createTable(parent, n) {
     let fc = parent.firstChild;
@@ -12,11 +12,20 @@ function createTable(parent, n) {
         for (let j=0; j<n; j++) {
             const td = document.createElement('td')
             table.appendChild(td);
+            td.addEventListener("click",function(event){
+                sayRC(td);
+            });
         }
         table.appendChild(tr);
     }
     parent.appendChild(table);
+
 }
+
+function sayRC(td) {
+    td.style.backgroundColor = "red";
+}
+
 
 //тут нужно написать функцию, расчитывающую h, например расстояние по прямой между двумя клетками
 
