@@ -13,7 +13,7 @@ function createTable(parent, n) {
             const td = document.createElement('td')
             table.appendChild(td);
             td.addEventListener("click",function(event){
-                sayRC(td);
+                barriers(td);
             });
         }
         table.appendChild(tr);
@@ -22,8 +22,13 @@ function createTable(parent, n) {
 
 }
 
-function sayRC(td) {
-    td.style.backgroundColor = "red";
+function barriers(td) {
+    if (td.style.backgroundColor === "red") {
+        td.style.backgroundColor = "";
+    }
+    else {
+        td.style.backgroundColor = "red";
+    }
 }
 
 
