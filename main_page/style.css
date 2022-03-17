@@ -3,76 +3,41 @@ html, body {
 }
 
 body {
-    background-color: white;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Rubik', sans-serif;
     font-weight: 400;
-    background-image: url(https://cdn.dribbble.com/users/45782/screenshots/11304218/media/314bfdb8d30e516a763ae5b33e173f9e.jpg);
+    background: url("img/photo-1579546929518-9e396f3cc809.avif") no-repeat fixed center center;
     background-size: cover;
-}
-
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
-
-.content {
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 100vh;
 }
 
 .buttons {
     display: flex;
     flex-direction: column;
+    padding: 20px 50px;
+    text-transform: uppercase;
+    color: white;
 }
 
 .btn {
     text-decoration: none;
-    padding: 20px 50px;
     font-size: 1.5rem;
+    padding: 15px 30px;
     position: relative;
-    margin: 30px;
-}
-
-.allBtn {
+    margin: 25px;
     color: #000;
+    border: 2px solid black;
+    border-radius: 1em;
+    transition-duration: 0.4s; /*speed of the "hover" effect*/
 }
 
-.allBtn::after, .allBtn::before {
-    border: 3px solid #000;
-    content: "";
-    position: absolute;
-    width: calc(100% - 6px);
-    height: calc(100% - 6px);
-    left: 0;
-    bottom: 0;
-    z-index: -1;
-    transition: transform 0.3s ease;
+.btn:hover {
+    transform: translateY(-0.25em);
+    box-shadow: 0 0.5em 0.5em -0.4em;
+    background-color: #e0876a;
+    color: white;
 }
 
-.allBtn:hover::after {
-    transform: translate(-5px, -5px);
-}
-
-.allBtn:hover::before {
-    transform: translate(5px, 5px);
-}
-
-.title {
-    color: #000;
-    margin: 33px;
-    font-size: 1.8rem;
-    width: calc(100% - 6px);
-    height: calc(100% - 6px);
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 400;
-    position: fixed;
-    text-align: center;
-    top: 0;
-}
 
