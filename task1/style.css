@@ -1,5 +1,5 @@
 body {
-    background: url("img/task1background.jpg") no-repeat center center fixed;
+    background: url("img/thomas-lefebvre-NRd7y-Gg_yw-unsplash.jpg") no-repeat center center fixed;
     background-size: cover;
     font-family: Lucida Console, fantasy;
     font-size: 10px;
@@ -28,7 +28,7 @@ table td {
     background-color: #fff9f6;
     opacity: 20%;
     position: relative;
-    width: 75%;
+    width: 73%;
     height: 800px;
 }
 table {

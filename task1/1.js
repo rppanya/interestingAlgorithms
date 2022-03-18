@@ -1,6 +1,7 @@
 const elem = document.getElementById('table');
 
 function createTable(parent, n) {
+
     let fc = parent.firstChild;
     while(fc) {
         parent.removeChild(fc);
@@ -18,6 +19,7 @@ function createTable(parent, n) {
             });
         }
         table.appendChild(tr);
+
     }
     parent.appendChild(table);
 }
@@ -51,54 +53,27 @@ function finishPoint(x, y) {
     }
     let p = document.getElementById((y-1)+" "+(x-1));
     p.style.backgroundColor="red";
+
 }
 
 //тут нужно написать функцию, расчитывающую h, например расстояние по прямой между двумя клетками
-
-
-//в эту функцию нужно будет передать массив map в виде матрицы смежности графа, построенного на основе карты
-// h - эвристическая оценка расстояния между точками(точно меньше фактического расстояния)
-const aStar = function (map, h, start, finish) {
-    let distances = []; //массив с расстояниями от старта до всех вершин
-    for (let i=0; i<map.length; i++) distances[i]=Number.MAX_VALUE;
-    distances[start] = 0;
-
-    let priorities = []; //массив с элементами, которые нужно посетить
-    for (var i=0; i<map.length; i++) priorities[i]=Number.MAX_VALUE;
-    priorities[start]=h[start][finish];
-
-    let visited = []; //массив с посещенными вершинами
-
-    let previous = []; //для каждой вершины будем хранить предыдущую в пути
-    previous[start]=-1;
-
-    while(true) {
-
-        //среди непосещенных узлов ищем узел с наибольшим приоритетом (наименьшим значением)
-        var lowestPriority = Number.MAX_VALUE;
-        var lowestPriorityIndex = -1;
-        for (let i=0; i<priorities.length; i++) {
-            if (priorities[i] < lowestPriority && !visited[i]) {
-                lowestPriority = priorities[i];
-                lowestPriorityIndex = i;
-            }
-        }
-        if (lowestPriorityIndex === -1) {
-            //все вершины посещены, пути нет
-            return -1;
-        } else if (lowestPriorityIndex === finish) {
-            return previous;
-        }
-
-        for (let i=0; i<map[lowestPriorityIndex].length; i++) {
-            if (map[lowestPriorityIndex][i] !== 0 && !visited[i]) {
-                if (distances[lowestPriorityIndex]+map[lowestPriorityIndex][i] < distances[i]) {
-                    distances[i] = distances[lowestPriorityIndex] + map[lowestPriorityIndex][i];
-                    priorities[i] = distances[i] + h[i][finish];
-                }
-                previous[i]=lowestPriorityIndex;
-            }
-        }
-        visited[lowestPriorityIndex]=true;
+function createMatrix() {
+    let all=document.querySelectorAll('td');
+    let matrix = new Array(Math.sqrt(all.length));
+    for (let i=0; i<matrix.length; i++) {
+        matrix[i]=new Array(Math.sqrt(all.length));
     }
+
+    for (let x=0; x<Math.sqrt(all.length); x++) {
+        for (let y = 0; y<Math.sqrt(all.length); y++) {
+            let p = document.getElementById((y) + " " + (x));
+            if (p.style.backgroundColor !== "black") {
+                matrix[x][y] = 1;
+            } else {
+                matrix[x][y] = 0;
+            }
+        }
+    }
+    return matrix;
 }
+
