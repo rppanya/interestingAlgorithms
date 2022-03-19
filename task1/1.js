@@ -74,22 +74,24 @@ function createMatrix() {
             }
         }
     }
-
-    adjMatrix(matrix);
+    console.log(matrix)
+    console.log(adjMatrix(matrix))
+    return matrix;
 }
 
 function adjMatrix(matrix) {
-    let numberMatrix = matrix
-    console.log(matrix);
+    let numberMatrix = new Array(matrix.length);
+    for (let i=0; i<matrix.length; i++) {
+        numberMatrix[i]=new Array(matrix.length);
+    }
     for (let i=0; i<numberMatrix.length; i++) {
         for (let j=0; j<numberMatrix.length; j++) {
             numberMatrix[i][j]=i*numberMatrix.length+j
         }
     }
-
     let adjMatrix = new Array(matrix.length*matrix.length);
     for (let i=0; i<adjMatrix.length; i++) {
-        matrix[i]=new Array(matrix.length*matrix.length);
+        adjMatrix[i]=new Array(matrix.length*matrix.length);
     }
     for (let i=0; i<adjMatrix.length; i++) {
         for (let j=0; j<adjMatrix.length; j++) {
@@ -98,21 +100,27 @@ function adjMatrix(matrix) {
     }
     for (let i=0; i<matrix.length; i++) {
         for (let j=0; j<matrix.length; j++) {
-            if (j<matrix.length-1 && matrix[i][j+1]===1) {
-                adjMatrix[numberMatrix[i][j]][numberMatrix[i][j+1]]=1;
-            }
-            if (i<matrix.length-1 && matrix[i+1][j]===1) {
-                adjMatrix[numberMatrix[i][j]][numberMatrix[i+1][j]]=1;
-            }
-            if (i>1 && matrix[i-1][j]===1) {
-                adjMatrix[numberMatrix[i][j]][numberMatrix[i-1][j]]=1;
-            }
-            if (j>1 && matrix[i][j-1]===1) {
-                adjMatrix[numberMatrix[i][j]][numberMatrix[i][j-1]]=1;
+            if (matrix[i][j]===1) {
+                if (j<matrix.length-1 && matrix[i][j+1]===1) {
+                    adjMatrix[numberMatrix[i][j]][numberMatrix[i][j+1]]=1;
+                    adjMatrix[numberMatrix[i][j+1]][numberMatrix[i][j]]=1
+                }
+                if (i<matrix.length-1 && matrix[i+1][j]===1) {
+                    adjMatrix[numberMatrix[i][j]][numberMatrix[i+1][j]]=1;
+                    adjMatrix[numberMatrix[i+1][j]][numberMatrix[i][j]]=1;
+                }
+                if (i>1 && matrix[i-1][j]===1) {
+                    adjMatrix[numberMatrix[i][j]][numberMatrix[i-1][j]]=1;
+                    adjMatrix[numberMatrix[i-1][j]][numberMatrix[i][j]]=1;
+                }
+                if (j>1 && matrix[i][j-1]===1) {
+                    adjMatrix[numberMatrix[i][j]][numberMatrix[i][j-1]]=1;
+                    adjMatrix[numberMatrix[i][j-1]][numberMatrix[i][j]]=1;
+                }
             }
         }
     }
-    console.log(adjMatrix)
+    return adjMatrix;
 }
 
 //тут нужно написать функцию, расчитывающую h, например расстояние по прямой между двумя клетками
@@ -125,7 +133,6 @@ const heuristic = function (startX, startY, finishX, finishY) {
 // h - эвристическая оценка расстояния между точками(точно меньше фактического расстояния)
 
 const aStar = function (map, h, start, finish) {
-
     let distances = []; //массив с расстояниями от старта до всех вершин
     for (let i=0; i<map.length; i++) distances[i]=Number.MAX_VALUE;
     distances[start] = 0;
