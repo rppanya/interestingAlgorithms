@@ -74,14 +74,13 @@ function createMatrix() {
             }
         }
     }
-    //console.log(matrix);
-    adjMatrix(matrix);
 
-    return matrix;
+    adjMatrix(matrix);
 }
 
 function adjMatrix(matrix) {
     let numberMatrix = matrix
+    console.log(matrix);
     for (let i=0; i<numberMatrix.length; i++) {
         for (let j=0; j<numberMatrix.length; j++) {
             numberMatrix[i][j]=i*numberMatrix.length+j
@@ -99,16 +98,16 @@ function adjMatrix(matrix) {
     }
     for (let i=0; i<matrix.length; i++) {
         for (let j=0; j<matrix.length; j++) {
-            if (matrix[i][j+1]===1 && j<matrix.length-1) {
+            if (j<matrix.length-1 && matrix[i][j+1]===1) {
                 adjMatrix[numberMatrix[i][j]][numberMatrix[i][j+1]]=1;
             }
-            if (matrix[i+1][j]===1 && i<matrix.length-1) {
+            if (i<matrix.length-1 && matrix[i+1][j]===1) {
                 adjMatrix[numberMatrix[i][j]][numberMatrix[i+1][j]]=1;
             }
-            if (matrix[i-1][j]===1 && i>1) {
+            if (i>1 && matrix[i-1][j]===1) {
                 adjMatrix[numberMatrix[i][j]][numberMatrix[i-1][j]]=1;
             }
-            if (matrix[i][j-1]===1 && j>1) {
+            if (j>1 && matrix[i][j-1]===1) {
                 adjMatrix[numberMatrix[i][j]][numberMatrix[i][j-1]]=1;
             }
         }
