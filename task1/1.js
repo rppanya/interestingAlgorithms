@@ -35,31 +35,37 @@ function barriers(td) {
         td.style.backgroundColor = "black";
     }
 }
+
 let start, finish, finishX, finishY;
 function startPoint(x, y) {
     let all=document.querySelectorAll('td');
-    for (let i=0; i<all.length; i++) {
-        if (all[i].style.backgroundColor==="green") {
-            all[i].style.backgroundColor="";
+    if (x!=="" && y!=="" && x>0 && y>0 && x<=Math.sqrt(all.length) && y<=Math.sqrt(all.length)) {
+        for (let i=0; i<all.length; i++) {
+            if (all[i].style.backgroundColor==="green") {
+                all[i].style.backgroundColor="";
+            }
         }
+        let p = document.getElementById(((y-1)+(x-1)*Math.sqrt(all.length)).toString());
+        p.style.backgroundColor="green";
+        start=(y-1)+(x-1)*Math.sqrt(all.length);
     }
-    let p = document.getElementById(((y-1)+(x-1)*Math.sqrt(all.length)).toString());
-    p.style.backgroundColor="green";
-    start=(y-1)+(x-1)*Math.sqrt(all.length);
 }
 function finishPoint(x, y) {
     let all=document.querySelectorAll('td');
-    for (let i=0; i<all.length; i++) {
-        if (all[i].style.backgroundColor==="red") {
-            all[i].style.backgroundColor="";
+    if (x!=="" && y!=="" && x>0 && y>0 && x<=Math.sqrt(all.length) && y<=Math.sqrt(all.length)) {
+
+        for (let i = 0; i < all.length; i++) {
+            if (all[i].style.backgroundColor === "red") {
+                all[i].style.backgroundColor = "";
+            }
         }
+        let p = document.getElementById(((y - 1) + (x - 1) * Math.sqrt(all.length)).toString());
+        p.style.backgroundColor = "red";
+        finish = (y - 1) + (x - 1) * Math.sqrt(all.length);
+        finishX = x - 1;
+        finishY = y - 1;
+        createMatrix()
     }
-    let p = document.getElementById(((y-1)+(x-1)*Math.sqrt(all.length)).toString());
-    p.style.backgroundColor="red";
-    finish=(y-1)+(x-1)*Math.sqrt(all.length);
-    finishX=x-1;
-    finishY=y-1;
-    createMatrix()
 }
 
 function createMatrix() {
@@ -83,15 +89,6 @@ function createMatrix() {
 }
 
 function adjMatrix(matrix) {
-    let numberMatrix = new Array(matrix.length);
-    for (let i=0; i<matrix.length; i++) {
-        numberMatrix[i]=new Array(matrix.length);
-    }
-    for (let i=0; i<numberMatrix.length; i++) {
-        for (let j=0; j<numberMatrix.length; j++) {
-            numberMatrix[i][j]=i*numberMatrix.length+j
-        }
-    }
     let adjMatrix = new Array(matrix.length*matrix.length);
     for (let i=0; i<adjMatrix.length; i++) {
         adjMatrix[i]=new Array(matrix.length*matrix.length);
@@ -101,24 +98,25 @@ function adjMatrix(matrix) {
             adjMatrix[i][j]=0
         }
     }
+
     for (let i=0; i<matrix.length; i++) {
         for (let j=0; j<matrix.length; j++) {
             if (matrix[i][j]===1) {
                 if (j<matrix.length-1 && matrix[i][j+1]===1) {
-                    adjMatrix[numberMatrix[i][j]][numberMatrix[i][j+1]]=1;
-                    adjMatrix[numberMatrix[i][j+1]][numberMatrix[i][j]]=1
+                    adjMatrix[i*matrix.length+j][i*matrix.length+j+1]=1;
+                    adjMatrix[i*matrix.length+j+1][i*matrix.length+j]=1
                 }
                 if (i<matrix.length-1 && matrix[i+1][j]===1) {
-                    adjMatrix[numberMatrix[i][j]][numberMatrix[i+1][j]]=1;
-                    adjMatrix[numberMatrix[i+1][j]][numberMatrix[i][j]]=1;
+                    adjMatrix[i*matrix.length+j][(i+1)*matrix.length+j]=1;
+                    adjMatrix[(i+1)*matrix.length+j][i*matrix.length+j]=1;
                 }
                 if (i>1 && matrix[i-1][j]===1) {
-                    adjMatrix[numberMatrix[i][j]][numberMatrix[i-1][j]]=1;
-                    adjMatrix[numberMatrix[i-1][j]][numberMatrix[i][j]]=1;
+                    adjMatrix[i*matrix.length+j][(i-1)*matrix.length+j]=1;
+                    adjMatrix[(i-1)*matrix.length+j][(i-1)*matrix.length+j]=1;
                 }
                 if (j>1 && matrix[i][j-1]===1) {
-                    adjMatrix[numberMatrix[i][j]][numberMatrix[i][j-1]]=1;
-                    adjMatrix[numberMatrix[i][j-1]][numberMatrix[i][j]]=1;
+                    adjMatrix[(i)*matrix.length+j][(i-1)*matrix.length+j-1]=1;
+                    adjMatrix[(i)*matrix.length+j-1][(i)*matrix.length+j]=1;
                 }
             }
         }
@@ -154,8 +152,9 @@ const pathOutput = (previous, finish) => {
 pathOutput(previous, previous[finish])
 };
 
-const aStar = function () {
-
+function aStar() {
+    clearMap("path");
+    document.getElementById("noPath").textContent = "";
     let map=adjMatrix(createMatrix())
     let distances = []; //массив с расстояниями от старта до всех вершин
     for (let i=0; i<map.length; i++) distances[i]=Number.MAX_VALUE;
@@ -180,11 +179,10 @@ const aStar = function () {
             }
         }
         if (lowestPriorityIndex === -1) {
-            alert("Нет пути");
+            document.getElementById("noPath").textContent = "No path"
             return -1;
         }
         else if (lowestPriorityIndex === finish) {
-            console.log(previous);
             pathOutput(previous, finish);
             return previous;
         }
@@ -199,6 +197,26 @@ const aStar = function () {
             }
         }
         visited[lowestPriorityIndex]=true;
+    }
+}
+
+function clearMap(condition) {
+    let all=document.querySelectorAll("td");
+    if (condition==="all"){
+        for (let i=0; i<all.length; i++) {
+        all[i].style.backgroundColor="";
+        }
+        /*document.getElementById("startX").value="";
+        document.getElementById("startY").value="";
+        document.getElementById("finishX").value="";
+        document.getElementById("finishY").value="";
+*/ //очистка координат страта и финиша, проблема в том что createPath выводит путь из бывшего старта в бывший финиш
+    } else if (condition==="path") {
+        for (let i=0; i<all.length; i++) {
+            if (all[i].style.backgroundColor==="blue") {
+                all[i].style.backgroundColor="";
+            }
+        }
     }
 }
 
