@@ -74,8 +74,6 @@ function createMatrix() {
             }
         }
     }
-    console.log(matrix)
-    console.log(adjMatrix(matrix))
     return matrix;
 }
 
@@ -124,28 +122,42 @@ function adjMatrix(matrix) {
 }
 
 //тут нужно написать функцию, расчитывающую h, например расстояние по прямой между двумя клетками
-const heuristic = function (startX, startY, finishX, finishY) {
+function heuristic (map, start, finishX, finishY) {
+    let sq = Math.sqrt(map.length);
+    let startX, startY;
+    let numberMatrix = new Array(sq);
+    for (let i=0; i<sq; i++) {
+        numberMatrix[i]=new Array(sq);
+    }
+    for (let i=0; i<numberMatrix.length; i++) {
+        for (let j=0; j<numberMatrix.length; j++) {
+            numberMatrix[i][j]=i*numberMatrix.length+j
+            if (numberMatrix[i][j] === start) {
+                startX = i;
+                startY = j;
+                break;
+            }
+        }
+    }
     return Math.abs(startX - finishX) + Math.abs(startY - finishY);
 }
-
 
 //в эту функцию нужно будет передать массив map в виде матрицы смежности графа, построенного на основе карты
 // h - эвристическая оценка расстояния между точками(точно меньше фактического расстояния)
 
-const aStar = function (map, h, start, finish) {
+const aStar = function (start, finish, finishX, finishY) {
+    let map=adjMatrix(createMatrix())
     let distances = []; //массив с расстояниями от старта до всех вершин
     for (let i=0; i<map.length; i++) distances[i]=Number.MAX_VALUE;
     distances[start] = 0;
-
     let priorities = []; //массив с элементами, которые нужно посетить
-    for (var i=0; i<map.length; i++) priorities[i]=Number.MAX_VALUE;
-    priorities[start]=h[start][finish];
+    for (let i=0; i<map.length; i++) priorities[i]=Number.MAX_VALUE;
+    priorities[start]=heuristic(map, start, finishX, finishY);
 
     let visited = []; //массив с посещенными вершинами
 
-    let previous = []; //для каждой вершины будем хранить предыдущую в пути
+    let previous = new Array(10); //для каждой вершины будем хранить предыдущую в пути
     previous[start]=-1;
-
     while(true) {
 
         //среди непосещенных узлов ищем узел с наибольшим приоритетом (наименьшим значением)
@@ -160,7 +172,9 @@ const aStar = function (map, h, start, finish) {
         if (lowestPriorityIndex === -1) {
             //все вершины посещены, пути нет
             return -1;
-        } else if (lowestPriorityIndex === finish) {
+        }
+        else if (lowestPriorityIndex === finish) {
+            console.log(previous);
             return previous;
         }
 
@@ -168,7 +182,7 @@ const aStar = function (map, h, start, finish) {
             if (map[lowestPriorityIndex][i] !== 0 && !visited[i]) {
                 if (distances[lowestPriorityIndex]+map[lowestPriorityIndex][i] < distances[i]) {
                     distances[i] = distances[lowestPriorityIndex] + map[lowestPriorityIndex][i];
-                    priorities[i] = distances[i] + h[i][finish];
+                    priorities[i] = distances[i] + heuristic(map, i, 2, 2);
                 }
                 previous[i]=lowestPriorityIndex;
             }
