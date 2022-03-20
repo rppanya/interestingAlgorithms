@@ -1,0 +1,19 @@
+body {
+    background: url("../task1/img/thomas-lefebvre-NRd7y-Gg_yw-unsplash.jpg") no-repeat center center fixed;
+    background-size: cover;
+    font-family: Lucida Console, fantasy;
+    font-size: 10px;
+}
+#plane {
+    background-color: #fff9f6;
+    opacity: 70%;
+    position: relative;
+    width: 73%;
+    height: 800px;
+}
+.round {
+    background-color: red;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
