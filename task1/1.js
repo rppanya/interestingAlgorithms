@@ -7,12 +7,14 @@ function createTable(parent, n) {
         parent.removeChild(fc);
         fc = parent.firstChild;
     }
+    let counter=0;
     const table = document.createElement('table');
     for (let i=0; i<n; i++) {
         const tr = document.createElement('tr')
         for (let j=0; j<n; j++) {
             const td = document.createElement('td')
-            td.id = j+" "+i;
+            td.id = counter.toString();
+            counter++;
             table.appendChild(td);
             td.addEventListener("click",function(){
                 barriers(td);
@@ -33,7 +35,7 @@ function barriers(td) {
         td.style.backgroundColor = "black";
     }
 }
-
+let start, finish, finishX, finishY;
 function startPoint(x, y) {
     let all=document.querySelectorAll('td');
     for (let i=0; i<all.length; i++) {
@@ -41,8 +43,9 @@ function startPoint(x, y) {
             all[i].style.backgroundColor="";
         }
     }
-    let p = document.getElementById((y-1)+" "+(x-1));
+    let p = document.getElementById((y-1)+(x-1)*Math.sqrt(all.length));
     p.style.backgroundColor="green";
+    start=(y-1)+(x-1)*Math.sqrt(all.length);
 }
 function finishPoint(x, y) {
     let all=document.querySelectorAll('td');
@@ -51,12 +54,14 @@ function finishPoint(x, y) {
             all[i].style.backgroundColor="";
         }
     }
-    let p = document.getElementById((y-1)+" "+(x-1));
+    let p = document.getElementById((y-1)+(x-1)*Math.sqrt(all.length));
     p.style.backgroundColor="red";
+    finish=(y-1)+(x-1)*Math.sqrt(all.length);
+    finishX=x-1;
+    finishY=y-1;
     createMatrix()
 }
 
-//тут нужно написать функцию, расчитывающую h, например расстояние по прямой между двумя клетками
 function createMatrix() {
     let all=document.querySelectorAll('td');
     let matrix = new Array(Math.sqrt(all.length));
@@ -66,7 +71,7 @@ function createMatrix() {
 
     for (let x=0; x<Math.sqrt(all.length); x++) {
         for (let y = 0; y<Math.sqrt(all.length); y++) {
-            let p = document.getElementById((y) + " " + (x));
+            let p = document.getElementById((y) + (x)*Math.sqrt(all.length));
             if (p.style.backgroundColor !== "black") {
                 matrix[x][y] = 1;
             } else {
@@ -121,7 +126,6 @@ function adjMatrix(matrix) {
     return adjMatrix;
 }
 
-//тут нужно написать функцию, расчитывающую h, например расстояние по прямой между двумя клетками
 function heuristic (map, start, finishX, finishY) {
     let sq = Math.sqrt(map.length);
     let startX, startY;
@@ -142,10 +146,16 @@ function heuristic (map, start, finishX, finishY) {
     return Math.abs(startX - finishX) + Math.abs(startY - finishY);
 }
 
-//в эту функцию нужно будет передать массив map в виде матрицы смежности графа, построенного на основе карты
-// h - эвристическая оценка расстояния между точками(точно меньше фактического расстояния)
+function pathOutput(previous, finish) {
+    let cur = document.getElementById(previous[finish].toString())
+    if (cur.style.backgroundColor !== "green") {
+        cur.style.backgroundColor = "grey";
+    }
+pathOutput(previous, previous[finish])
+}
 
-const aStar = function (start, finish, finishX, finishY) {
+const aStar = function () {
+
     let map=adjMatrix(createMatrix())
     let distances = []; //массив с расстояниями от старта до всех вершин
     for (let i=0; i<map.length; i++) distances[i]=Number.MAX_VALUE;
@@ -156,7 +166,7 @@ const aStar = function (start, finish, finishX, finishY) {
 
     let visited = []; //массив с посещенными вершинами
 
-    let previous = new Array(10); //для каждой вершины будем хранить предыдущую в пути
+    let previous = []; //для каждой вершины будем хранить предыдущую в пути
     previous[start]=-1;
     while(true) {
 
@@ -175,6 +185,7 @@ const aStar = function (start, finish, finishX, finishY) {
         }
         else if (lowestPriorityIndex === finish) {
             console.log(previous);
+            pathOutput(previous, finish);
             return previous;
         }
 
@@ -190,3 +201,4 @@ const aStar = function (start, finish, finishX, finishY) {
         visited[lowestPriorityIndex]=true;
     }
 }
+
