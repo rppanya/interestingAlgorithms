@@ -43,7 +43,7 @@ function startPoint(x, y) {
             all[i].style.backgroundColor="";
         }
     }
-    let p = document.getElementById((y-1)+(x-1)*Math.sqrt(all.length));
+    let p = document.getElementById(((y-1)+(x-1)*Math.sqrt(all.length)).toString());
     p.style.backgroundColor="green";
     start=(y-1)+(x-1)*Math.sqrt(all.length);
 }
@@ -54,7 +54,7 @@ function finishPoint(x, y) {
             all[i].style.backgroundColor="";
         }
     }
-    let p = document.getElementById((y-1)+(x-1)*Math.sqrt(all.length));
+    let p = document.getElementById(((y-1)+(x-1)*Math.sqrt(all.length)).toString());
     p.style.backgroundColor="red";
     finish=(y-1)+(x-1)*Math.sqrt(all.length);
     finishX=x-1;
@@ -71,7 +71,7 @@ function createMatrix() {
 
     for (let x=0; x<Math.sqrt(all.length); x++) {
         for (let y = 0; y<Math.sqrt(all.length); y++) {
-            let p = document.getElementById((y) + (x)*Math.sqrt(all.length));
+            let p = document.getElementById(((y) + (x)*Math.sqrt(all.length)).toString());
             if (p.style.backgroundColor !== "black") {
                 matrix[x][y] = 1;
             } else {
@@ -143,16 +143,16 @@ function heuristic (map, start, finishX, finishY) {
             }
         }
     }
-    return Math.abs(startX - finishX) + Math.abs(startY - finishY);
+    return Math.max(Math.abs(startX - finishX), Math.abs(startY - finishY));
 }
 
-function pathOutput(previous, finish) {
+const pathOutput = (previous, finish) => {
     let cur = document.getElementById(previous[finish].toString())
     if (cur.style.backgroundColor !== "green") {
-        cur.style.backgroundColor = "grey";
+        cur.style.backgroundColor = "blue";
     }
 pathOutput(previous, previous[finish])
-}
+};
 
 const aStar = function () {
 
@@ -171,8 +171,8 @@ const aStar = function () {
     while(true) {
 
         //среди непосещенных узлов ищем узел с наибольшим приоритетом (наименьшим значением)
-        var lowestPriority = Number.MAX_VALUE;
-        var lowestPriorityIndex = -1;
+        let lowestPriority = Number.MAX_VALUE;
+        let lowestPriorityIndex = -1;
         for (let i=0; i<priorities.length; i++) {
             if (priorities[i] < lowestPriority && !visited[i]) {
                 lowestPriority = priorities[i];
@@ -180,7 +180,7 @@ const aStar = function () {
             }
         }
         if (lowestPriorityIndex === -1) {
-            //все вершины посещены, пути нет
+            alert("Нет пути");
             return -1;
         }
         else if (lowestPriorityIndex === finish) {
@@ -193,9 +193,9 @@ const aStar = function () {
             if (map[lowestPriorityIndex][i] !== 0 && !visited[i]) {
                 if (distances[lowestPriorityIndex]+map[lowestPriorityIndex][i] < distances[i]) {
                     distances[i] = distances[lowestPriorityIndex] + map[lowestPriorityIndex][i];
-                    priorities[i] = distances[i] + heuristic(map, i, 2, 2);
+                    priorities[i] = distances[i] + heuristic(map, i, finishX, finishY);
+                    previous[i]=lowestPriorityIndex;
                 }
-                previous[i]=lowestPriorityIndex;
             }
         }
         visited[lowestPriorityIndex]=true;
