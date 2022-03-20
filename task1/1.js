@@ -64,7 +64,6 @@ function finishPoint(x, y) {
         finish = (y - 1) + (x - 1) * Math.sqrt(all.length);
         finishX = x - 1;
         finishY = y - 1;
-        createMatrix()
     }
 }
 
@@ -124,7 +123,7 @@ function adjMatrix(matrix) {
     return adjMatrix;
 }
 
-function heuristic (map, start, finishX, finishY) {
+function heuristic (map, start) {
     let sq = Math.sqrt(map.length);
     let startX, startY;
     let numberMatrix = new Array(sq);
@@ -152,59 +151,11 @@ const pathOutput = (previous, finish) => {
 pathOutput(previous, previous[finish])
 };
 
-function aStar() {
-    clearMap("path");
-    document.getElementById("noPath").textContent = "";
-    let map=adjMatrix(createMatrix())
-    let distances = []; //массив с расстояниями от старта до всех вершин
-    for (let i=0; i<map.length; i++) distances[i]=Number.MAX_VALUE;
-    distances[start] = 0;
-    let priorities = []; //массив с элементами, которые нужно посетить
-    for (let i=0; i<map.length; i++) priorities[i]=Number.MAX_VALUE;
-    priorities[start]=heuristic(map, start, finishX, finishY);
-
-    let visited = []; //массив с посещенными вершинами
-
-    let previous = []; //для каждой вершины будем хранить предыдущую в пути
-    previous[start]=-1;
-    while(true) {
-
-        //среди непосещенных узлов ищем узел с наибольшим приоритетом (наименьшим значением)
-        let lowestPriority = Number.MAX_VALUE;
-        let lowestPriorityIndex = -1;
-        for (let i=0; i<priorities.length; i++) {
-            if (priorities[i] < lowestPriority && !visited[i]) {
-                lowestPriority = priorities[i];
-                lowestPriorityIndex = i;
-            }
-        }
-        if (lowestPriorityIndex === -1) {
-            document.getElementById("noPath").textContent = "No path"
-            return -1;
-        }
-        else if (lowestPriorityIndex === finish) {
-            pathOutput(previous, finish);
-            return previous;
-        }
-
-        for (let i=0; i<map[lowestPriorityIndex].length; i++) {
-            if (map[lowestPriorityIndex][i] !== 0 && !visited[i]) {
-                if (distances[lowestPriorityIndex]+map[lowestPriorityIndex][i] < distances[i]) {
-                    distances[i] = distances[lowestPriorityIndex] + map[lowestPriorityIndex][i];
-                    priorities[i] = distances[i] + heuristic(map, i, finishX, finishY);
-                    previous[i]=lowestPriorityIndex;
-                }
-            }
-        }
-        visited[lowestPriorityIndex]=true;
-    }
-}
-
 function clearMap(condition) {
     let all=document.querySelectorAll("td");
     if (condition==="all"){
         for (let i=0; i<all.length; i++) {
-        all[i].style.backgroundColor="";
+            all[i].style.backgroundColor="";
         }
         /*document.getElementById("startX").value="";
         document.getElementById("startY").value="";
@@ -219,4 +170,55 @@ function clearMap(condition) {
         }
     }
 }
+
+function aStar() {
+    clearMap("path");
+    document.getElementById("noPath").textContent = "";
+    let map=adjMatrix(createMatrix())
+
+    let queue = [], visited = [], previous = [], fromStart = [];
+    for (let i=0; i<map.length; i++) {
+        queue[i]=1e9;
+    }  //массив с элементами, которые нужно посетить
+    queue[start]=heuristic(map, start);
+    previous[start]=-1;
+
+    for (let i=0; i<map.length; i++) {
+        fromStart[i]=1e9;
+    }   //массив с расстояниями от старта
+    fromStart[start] = 0;
+
+    while(true) {
+
+        let current = 1e9;
+        let currentIndex = -1;
+        for (let i=0; i<queue.length; i++) {
+            if (queue[i] < current && !visited[i]) {
+                current = queue[i];
+                currentIndex = i;
+            }
+        }   //среди элементов очереди ищем элемент с наименьшим значением
+        if (currentIndex === finish) {
+            pathOutput(previous, finish);
+            return;
+        }
+        else if (currentIndex === -1) {
+            document.getElementById("noPath").textContent = "No path"
+            return;
+        }
+
+        for (let i=0; i<map[currentIndex].length; i++) {
+            if (map[currentIndex][i] !== 0 && !visited[i]) {
+                if (fromStart[currentIndex]+map[currentIndex][i] < fromStart[i]) {
+                    previous[i]=currentIndex;
+                    fromStart[i] = fromStart[currentIndex] + map[currentIndex][i];
+                    queue[i] = fromStart[i] + heuristic(map, i);
+                }
+            }
+        }
+        visited[currentIndex]=true;
+    }
+}
+
+
 
