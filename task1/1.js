@@ -140,7 +140,7 @@ function heuristic (map, start) {
             }
         }
     }
-    return Math.max(Math.abs(startX - finishX), Math.abs(startY - finishY));
+    return Math.sqrt(Math.pow((startX - finishX),2)+ Math.pow((startY - finishY), 2));
 }
 
 const pathOutput = (previous, finish) => {
@@ -161,7 +161,7 @@ function clearMap(condition) {
         document.getElementById("startY").value="";
         document.getElementById("finishX").value="";
         document.getElementById("finishY").value="";
-*/ //очистка координат страта и финиша, проблема в том что createPath выводит путь из бывшего старта в бывший финиш
+*/ //очистка координат старта и финиша, проблема в том что createPath выводит путь из бывшего старта в бывший финиш
     } else if (condition==="path") {
         for (let i=0; i<all.length; i++) {
             if (all[i].style.backgroundColor==="blue") {
@@ -189,7 +189,6 @@ function aStar() {
     fromStart[start] = 0;
 
     while(true) {
-
         let current = 1e9;
         let currentIndex = -1;
         for (let i=0; i<queue.length; i++) {
