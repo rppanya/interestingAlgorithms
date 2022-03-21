@@ -139,7 +139,7 @@ function heuristic (map, start) {
                 break;
             }
         }
-    }
+    } //можно получить координаты элемента по id, без numberMatrix как-то
     return Math.sqrt(Math.pow((startX - finishX),2)+ Math.pow((startY - finishY), 2));
 }
 
@@ -152,6 +152,7 @@ pathOutput(previous, previous[finish])
 };
 
 function clearMap(condition) {
+    document.getElementById("noPath").textContent = "";
     let all=document.querySelectorAll("td");
     if (condition==="all"){
         for (let i=0; i<all.length; i++) {
@@ -181,7 +182,6 @@ function aStar() {
         queue[i]=1e9;
     }  //массив с элементами, которые нужно посетить
     queue[start]=heuristic(map, start);
-    previous[start]=-1;
 
     for (let i=0; i<map.length; i++) {
         fromStart[i]=1e9;
@@ -207,10 +207,10 @@ function aStar() {
         }
 
         for (let i=0; i<map[currentIndex].length; i++) {
-            if (map[currentIndex][i] !== 0 && !visited[i]) {
-                if (fromStart[currentIndex]+map[currentIndex][i] < fromStart[i]) {
-                    previous[i]=currentIndex;
-                    fromStart[i] = fromStart[currentIndex] + map[currentIndex][i];
+            if (map[currentIndex][i] === 1 && !visited[i]) {
+                if (fromStart[currentIndex]+1 < fromStart[i]) {
+                    previous[i] = currentIndex;
+                    fromStart[i] = fromStart[currentIndex] + 1;
                     queue[i] = fromStart[i] + heuristic(map, i);
                 }
             }
