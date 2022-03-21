@@ -35,31 +35,36 @@ function barriers(td) {
         td.style.backgroundColor = "black";
     }
 }
+
 let start, finish, finishX, finishY;
 function startPoint(x, y) {
     let all=document.querySelectorAll('td');
-    for (let i=0; i<all.length; i++) {
-        if (all[i].style.backgroundColor==="green") {
-            all[i].style.backgroundColor="";
+    if (x!=="" && y!=="" && x>0 && y>0 && x<=Math.sqrt(all.length) && y<=Math.sqrt(all.length)) {
+        for (let i=0; i<all.length; i++) {
+            if (all[i].style.backgroundColor==="green") {
+                all[i].style.backgroundColor="";
+            }
         }
+        let p = document.getElementById(((y-1)+(x-1)*Math.sqrt(all.length)).toString());
+        p.style.backgroundColor="green";
+        start=(y-1)+(x-1)*Math.sqrt(all.length);
     }
-    let p = document.getElementById(((y-1)+(x-1)*Math.sqrt(all.length)).toString());
-    p.style.backgroundColor="green";
-    start=(y-1)+(x-1)*Math.sqrt(all.length);
 }
 function finishPoint(x, y) {
     let all=document.querySelectorAll('td');
-    for (let i=0; i<all.length; i++) {
-        if (all[i].style.backgroundColor==="red") {
-            all[i].style.backgroundColor="";
+    if (x!=="" && y!=="" && x>0 && y>0 && x<=Math.sqrt(all.length) && y<=Math.sqrt(all.length)) {
+
+        for (let i = 0; i < all.length; i++) {
+            if (all[i].style.backgroundColor === "red") {
+                all[i].style.backgroundColor = "";
+            }
         }
+        let p = document.getElementById(((y - 1) + (x - 1) * Math.sqrt(all.length)).toString());
+        p.style.backgroundColor = "red";
+        finish = (y - 1) + (x - 1) * Math.sqrt(all.length);
+        finishX = x - 1;
+        finishY = y - 1;
     }
-    let p = document.getElementById(((y-1)+(x-1)*Math.sqrt(all.length)).toString());
-    p.style.backgroundColor="red";
-    finish=(y-1)+(x-1)*Math.sqrt(all.length);
-    finishX=x-1;
-    finishY=y-1;
-    createMatrix()
 }
 
 function createMatrix() {
@@ -83,15 +88,6 @@ function createMatrix() {
 }
 
 function adjMatrix(matrix) {
-    let numberMatrix = new Array(matrix.length);
-    for (let i=0; i<matrix.length; i++) {
-        numberMatrix[i]=new Array(matrix.length);
-    }
-    for (let i=0; i<numberMatrix.length; i++) {
-        for (let j=0; j<numberMatrix.length; j++) {
-            numberMatrix[i][j]=i*numberMatrix.length+j
-        }
-    }
     let adjMatrix = new Array(matrix.length*matrix.length);
     for (let i=0; i<adjMatrix.length; i++) {
         adjMatrix[i]=new Array(matrix.length*matrix.length);
@@ -101,24 +97,25 @@ function adjMatrix(matrix) {
             adjMatrix[i][j]=0
         }
     }
+
     for (let i=0; i<matrix.length; i++) {
         for (let j=0; j<matrix.length; j++) {
             if (matrix[i][j]===1) {
                 if (j<matrix.length-1 && matrix[i][j+1]===1) {
-                    adjMatrix[numberMatrix[i][j]][numberMatrix[i][j+1]]=1;
-                    adjMatrix[numberMatrix[i][j+1]][numberMatrix[i][j]]=1
+                    adjMatrix[i*matrix.length+j][i*matrix.length+j+1]=1;
+                    adjMatrix[i*matrix.length+j+1][i*matrix.length+j]=1
                 }
                 if (i<matrix.length-1 && matrix[i+1][j]===1) {
-                    adjMatrix[numberMatrix[i][j]][numberMatrix[i+1][j]]=1;
-                    adjMatrix[numberMatrix[i+1][j]][numberMatrix[i][j]]=1;
+                    adjMatrix[i*matrix.length+j][(i+1)*matrix.length+j]=1;
+                    adjMatrix[(i+1)*matrix.length+j][i*matrix.length+j]=1;
                 }
                 if (i>1 && matrix[i-1][j]===1) {
-                    adjMatrix[numberMatrix[i][j]][numberMatrix[i-1][j]]=1;
-                    adjMatrix[numberMatrix[i-1][j]][numberMatrix[i][j]]=1;
+                    adjMatrix[i*matrix.length+j][(i-1)*matrix.length+j]=1;
+                    adjMatrix[(i-1)*matrix.length+j][(i-1)*matrix.length+j]=1;
                 }
                 if (j>1 && matrix[i][j-1]===1) {
-                    adjMatrix[numberMatrix[i][j]][numberMatrix[i][j-1]]=1;
-                    adjMatrix[numberMatrix[i][j-1]][numberMatrix[i][j]]=1;
+                    adjMatrix[(i)*matrix.length+j][(i-1)*matrix.length+j-1]=1;
+                    adjMatrix[(i)*matrix.length+j-1][(i)*matrix.length+j]=1;
                 }
             }
         }
@@ -126,7 +123,7 @@ function adjMatrix(matrix) {
     return adjMatrix;
 }
 
-function heuristic (map, start, finishX, finishY) {
+function heuristic (map, start) {
     let sq = Math.sqrt(map.length);
     let startX, startY;
     let numberMatrix = new Array(sq);
@@ -142,8 +139,8 @@ function heuristic (map, start, finishX, finishY) {
                 break;
             }
         }
-    }
-    return Math.max(Math.abs(startX - finishX), Math.abs(startY - finishY));
+    } //можно получить координаты элемента по id, без numberMatrix как-то
+    return Math.sqrt(Math.pow((startX - finishX),2)+ Math.pow((startY - finishY), 2));
 }
 
 const pathOutput = (previous, finish) => {
@@ -154,51 +151,73 @@ const pathOutput = (previous, finish) => {
 pathOutput(previous, previous[finish])
 };
 
-const aStar = function () {
-
-    let map=adjMatrix(createMatrix())
-    let distances = []; //массив с расстояниями от старта до всех вершин
-    for (let i=0; i<map.length; i++) distances[i]=Number.MAX_VALUE;
-    distances[start] = 0;
-    let priorities = []; //массив с элементами, которые нужно посетить
-    for (let i=0; i<map.length; i++) priorities[i]=Number.MAX_VALUE;
-    priorities[start]=heuristic(map, start, finishX, finishY);
-
-    let visited = []; //массив с посещенными вершинами
-
-    let previous = []; //для каждой вершины будем хранить предыдущую в пути
-    previous[start]=-1;
-    while(true) {
-
-        //среди непосещенных узлов ищем узел с наибольшим приоритетом (наименьшим значением)
-        let lowestPriority = Number.MAX_VALUE;
-        let lowestPriorityIndex = -1;
-        for (let i=0; i<priorities.length; i++) {
-            if (priorities[i] < lowestPriority && !visited[i]) {
-                lowestPriority = priorities[i];
-                lowestPriorityIndex = i;
+function clearMap(condition) {
+    document.getElementById("noPath").textContent = "";
+    let all=document.querySelectorAll("td");
+    if (condition==="all"){
+        for (let i=0; i<all.length; i++) {
+            all[i].style.backgroundColor="";
+        }
+        /*document.getElementById("startX").value="";
+        document.getElementById("startY").value="";
+        document.getElementById("finishX").value="";
+        document.getElementById("finishY").value="";
+*/ //очистка координат старта и финиша, проблема в том что createPath выводит путь из бывшего старта в бывший финиш
+    } else if (condition==="path") {
+        for (let i=0; i<all.length; i++) {
+            if (all[i].style.backgroundColor==="blue") {
+                all[i].style.backgroundColor="";
             }
         }
-        if (lowestPriorityIndex === -1) {
-            alert("Нет пути");
-            return -1;
-        }
-        else if (lowestPriorityIndex === finish) {
-            console.log(previous);
+    }
+}
+
+function aStar() {
+    clearMap("path");
+    document.getElementById("noPath").textContent = "";
+    let map=adjMatrix(createMatrix())
+
+    let queue = [], visited = [], previous = [], fromStart = [];
+    for (let i=0; i<map.length; i++) {
+        queue[i]=1e9;
+    }  //массив с элементами, которые нужно посетить
+    queue[start]=heuristic(map, start);
+
+    for (let i=0; i<map.length; i++) {
+        fromStart[i]=1e9;
+    }   //массив с расстояниями от старта
+    fromStart[start] = 0;
+
+    while(true) {
+        let current = 1e9;
+        let currentIndex = -1;
+        for (let i=0; i<queue.length; i++) {
+            if (queue[i] < current && !visited[i]) {
+                current = queue[i];
+                currentIndex = i;
+            }
+        }   //среди элементов очереди ищем элемент с наименьшим значением
+        if (currentIndex === finish) {
             pathOutput(previous, finish);
-            return previous;
+            return;
+        }
+        else if (currentIndex === -1) {
+            document.getElementById("noPath").textContent = "No path"
+            return;
         }
 
-        for (let i=0; i<map[lowestPriorityIndex].length; i++) {
-            if (map[lowestPriorityIndex][i] !== 0 && !visited[i]) {
-                if (distances[lowestPriorityIndex]+map[lowestPriorityIndex][i] < distances[i]) {
-                    distances[i] = distances[lowestPriorityIndex] + map[lowestPriorityIndex][i];
-                    priorities[i] = distances[i] + heuristic(map, i, finishX, finishY);
-                    previous[i]=lowestPriorityIndex;
+        for (let i=0; i<map[currentIndex].length; i++) {
+            if (map[currentIndex][i] === 1 && !visited[i]) {
+                if (fromStart[currentIndex]+1 < fromStart[i]) {
+                    previous[i] = currentIndex;
+                    fromStart[i] = fromStart[currentIndex] + 1;
+                    queue[i] = fromStart[i] + heuristic(map, i);
                 }
             }
         }
-        visited[lowestPriorityIndex]=true;
+        visited[currentIndex]=true;
     }
 }
+
+
 

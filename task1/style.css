@@ -10,7 +10,7 @@ body {
     right: 50px;
     top: 50px;
     width: 300px;
-    height: 400px;
+    height: 470px;
     border-radius: 20px;
 }
 .input-data {
@@ -25,21 +25,24 @@ table td {
     padding: 20px;
 }
 #table {
-    background-color: #fff9f6;
-    opacity: 20%;
+    opacity: 50%;
     position: relative;
     width: 73%;
-    height: 800px;
 }
 table {
     background: url("img/2fd71aac05635a2d364d73497922604c.png");
     position: relative;
     margin: auto;
 }
-#createPath {
+.Buttons {
     background-color: white;
     position: relative;
     left: 55px;
     width: 200px;
     height: 40px;
+}
+#noPath {
+    color: red;
+    position: relative;
+    left: 115px;
 }
