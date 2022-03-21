@@ -91,7 +91,7 @@ function connectMinDistClusters() {
                     }
                 }
             }
-            if ((curMin.dist < 4 * (diffSum / count) || count == 1 || count == 0) || curMin.dist < 30000) {
+            if (curMin.dist < 4 * (diffSum / count) || curMin.dist < 5000) {
                 for (let i = 0; i < cluster[curMin.num2].length; i++) {
                     cluster[curMin.num1].push(cluster[curMin.num2][i]);
                 }

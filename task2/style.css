@@ -8,14 +8,10 @@ body{
 button{
     width: 100px;
     height: 50px;
-    position: absolute;
-    top: 240px;
-    right: 130px;
+    position: relative;
+    left: 29%;
+    bottom: 214px;
     display: inline-block;
-}
-
-* {
-    margin: 0px;
 }
 
 #canvas{
