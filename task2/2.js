@@ -2,8 +2,8 @@ const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext("2d");
 let points = [];
 let counter = 0;
-canvas.height = 500;
-canvas.width = 500;
+canvas.height = 700;
+canvas.width = 700;
 let cluster = [];
 let distance = [];
 
@@ -91,7 +91,7 @@ function connectMinDistClusters() {
                     }
                 }
             }
-            if (curMin.dist < 4 * (diffSum / count) || curMin.dist < 5000) {
+            if (curMin.dist < 4 * (diffSum / count) || curMin.dist < 7000) {
                 for (let i = 0; i < cluster[curMin.num2].length; i++) {
                     cluster[curMin.num1].push(cluster[curMin.num2][i]);
                 }
@@ -124,19 +124,9 @@ function paintClusterElement(cl, color){
 }
 
 //initial button pressed function
-function paintDots(){
+function hierarchicalClustering(){
     fillDists();
     countDists();
-    /*for(let i=0;i<points.length;i++){
-        for(let j=0;j<points.length;j++){
-            console.log(distance[i][j]);
-        }
-    }*/
-
-    //for(let i = 0; i < points.length; i++) {
-      //  paintDot(points[i].x, points[i].y);
-  //  }
-
     connectMinDistClusters();
 }
 
@@ -159,6 +149,14 @@ function draw(event){
     ctx.lineTo(event.clientX, event.clientY);
     ctx.stroke();
     ctx.beginPath();
+}
+
+function clearAll(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    points = [];
+    distance = [];
+    cluster = [];
+    counter = 0;
 }
 
 canvas.addEventListener('click', startPos);
