@@ -144,11 +144,13 @@ function heuristic (map, start) {
 }
 
 const pathOutput = (previous, finish) => {
-    let cur = document.getElementById(previous[finish].toString())
-    if (cur.style.backgroundColor !== "green") {
-        cur.style.backgroundColor = "blue";
+    if (previous[finish] !== undefined) {
+        let cur = document.getElementById(previous[finish])
+        if (cur.style.backgroundColor !== "green") {
+            cur.style.backgroundColor = "blue";
+        }
+        pathOutput(previous, previous[finish])
     }
-pathOutput(previous, previous[finish])
 };
 
 function clearMap(condition) {

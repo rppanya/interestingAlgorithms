@@ -1,19 +1,28 @@
 body {
-    background: url("../task1/img/thomas-lefebvre-NRd7y-Gg_yw-unsplash.jpg") no-repeat center center fixed;
+    background: url("back.jpg") no-repeat center center fixed;
     background-size: cover;
     font-family: Lucida Console, fantasy;
     font-size: 10px;
 }
 #plane {
-    background-color: #fff9f6;
-    opacity: 70%;
+    background-color: #f7fffc;
     position: relative;
-    width: 73%;
-    height: 800px;
+    left:60px;
+    top:60px;
+    width: 600px;
+    height: 600px;
+    border: 4px solid #000000;
+}
+#createPath {
+    display: inline-block;
+    position: relative;
+    left: 800px;
 }
 .round {
-    background-color: red;
-    width: 30px;
-    height: 30px;
+    display: inline-block;
+    background-color: black;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
+    position: fixed;
 }
