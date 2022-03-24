@@ -12,7 +12,6 @@ function createVertex(parent, x, y) {
     vertex.style.top = y + "px";
     vertex.style.left = x + "px";
     parent.appendChild(vertex);
-
 }
 
 let cityDistance = []; //массив с расстояниями между городами
@@ -32,11 +31,11 @@ function shuffle(array) { //перемешивает массив чисел
     for (let j, x, i = array.length; i; j = parseInt(Math.random() * i), x = array[--i], array[i] = array[j], array[j] = x) {}
     return true;
 }
-
+let population = [], fitness = [];
 function firstPopulation() { //создает начальную популяцию из 10ти особей
     cityDistanceInitial();
-    let population = [], fitness = [];
-    for (let i=0; i<10; i++) {
+
+    for (let i=0; i<n/2; i++) {
         population[i]=[];
         for (let j=0; j<n; j++) {
             population[i][j]=j;
@@ -44,6 +43,7 @@ function firstPopulation() { //создает начальную популяц�
         shuffle(population[i]);
         fitness[i]=individualFitness(population[i])
     }
+
     /*console.log(population);
     console.log(fitness);*/
 }
@@ -53,6 +53,7 @@ function individualFitness(individual) { //считает приспособле
     for (let i=0; i<individual.length-1; i++) {
         fitness+=cityDistance[individual[i]][individual[i+1]];
     }
+
     return fitness;
 }
 
@@ -102,18 +103,6 @@ function mutation(individual) {
     return individual;
 }
 
-function compare(a, b) { // критерий для сортировки особей в популяции
-    if (individualFitness(a)<individualFitness(b)) {
-        return -1;
-    }
-    else if (individualFitness(a)===individualFitness(b)){
-        return 0;
-    }
-    else {
-        return 1;
-    }
-}
-
 function pathOutput(individual) {
     ctx.beginPath();
     for (let i=0; i<individual.length-1; i++) {
@@ -124,4 +113,15 @@ function pathOutput(individual) {
         ctx.stroke();
     }
 
+}
+function compare(a, b) {
+    return fitness[a]-fitness[b];
+}
+function genetic() {
+    firstPopulation();
+    console.log(population);
+    console.log(fitness);
+
+    population.forEach(row => row.sort(compare));
+    console.log(population);
 }
