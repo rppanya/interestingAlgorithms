@@ -10,6 +10,8 @@ body {
 }
 
 .dossier {
+    display: inline-block;
+    overflow-wrap: break-word;
     width: 400px;
     height: 400px;
     top: 70px;
