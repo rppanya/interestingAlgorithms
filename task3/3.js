@@ -135,9 +135,6 @@ function pathOutput(individual) {
 function clearPaths() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-/*function compare(a, b) {
-    return fitness[a] - fitness[b];
-}*/
 
 function genetic() {
     if(isFirstPopulation) {
@@ -174,6 +171,8 @@ function genetic() {
         }
         clearPaths();
         pathOutput(population[0]);
+        document.getElementById("bestCurPath").textContent = population[0];
+        document.getElementById("pathLen").textContent = individualFitness(population[0]);
        // counter++;
     }
     bestPath = undefined;

@@ -5,8 +5,24 @@ body {
     font-size: 10px;
 }
 
+.poleText{
+    font-size: 20px;
+}
+
+.dossier {
+    width: 400px;
+    height: 400px;
+    top: 70px;
+    background-color: #fff7f7;
+    box-shadow: 10px 10px 10px #b0b0b0;
+    border-radius: 20px;
+    padding: 20px;
+    position: absolute;
+    left: 850px;
+}
+
 #plane {
-    background-color: #f7fffc;
+    background-color: #ffffff;
     position: relative;
     left:60px;
     top:60px;
@@ -16,9 +32,23 @@ body {
 }
 
 #createPath {
-    display: inline-block;
+    display: block;
     position: relative;
-    left: 800px;
+    top: 170px;
+    margin: 0 auto;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 500px;
+    transition-duration: .3s;
+    border: 1px solid transparent;
+    letter-spacing: 4px;
+    min-width: 160px;
+    font-weight: 700;
+    text-align: center;
+    color: #000000;
+    box-shadow: inset 0 0 0 3px #0e0e0e;
+    background-color: transparent;
+    height: 50px;
 }
 
 .round {
