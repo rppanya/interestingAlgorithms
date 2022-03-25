@@ -1,11 +1,12 @@
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext("2d");
-let points = [];
-let counter = 0;
-canvas.height = 700;
+canvas.height = 737;
 canvas.width = 700;
+let points = [];
 let cluster = [];
 let distance = [];
+let counter = 0;
+let canSetDots = true;
 
 class Point {
     constructor(x, y) {
@@ -91,7 +92,7 @@ function connectMinDistClusters() {
                     }
                 }
             }
-            if (curMin.dist < 4 * (diffSum / count) || curMin.dist < 7000) {
+            if (curMin.dist < 4 * (diffSum / count) || curMin.dist < 18000) {
                 for (let i = 0; i < cluster[curMin.num2].length; i++) {
                     cluster[curMin.num1].push(cluster[curMin.num2][i]);
                 }
@@ -113,8 +114,9 @@ function connectMinDistClusters() {
    }
 }
 
+//paints a dot in definite color
 function paintClusterElement(cl, color){
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 12;
         ctx.lineCap = "square";
         ctx.strokeStyle = "#" + color;
 
@@ -125,25 +127,34 @@ function paintClusterElement(cl, color){
 
 //initial button pressed function
 function hierarchicalClustering(){
-    fillDists();
-    countDists();
-    connectMinDistClusters();
+    if(points.length === 0){
+        alert("INSERT DOTS");
+        return;
+    }
+    if(canSetDots) {
+        fillDists();
+        countDists();
+        connectMinDistClusters();
+    }
+    canSetDots = false;
 }
 
 //position of dot for (clusters and points arrays) and for draw
 function startPos(event){
-    let p = new Point(event.clientX, event.clientY);
-    let clust = new PointAndNum(p, counter);
-    points.push(p);
-    cluster.push(clust);
-    counter++;
-    draw(event);
-    ctx.beginPath();
+    if(canSetDots) {
+        let p = new Point(event.clientX, event.clientY);
+        let clust = new PointAndNum(p, counter);
+        points.push(p);
+        cluster.push(clust);
+        counter++;
+        draw(event);
+        ctx.beginPath();
+    }
 }
 
 //draws dots where click
 function draw(event){
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 7;
     ctx.lineCap = "square";
     ctx.strokeStyle = 'black';
     ctx.lineTo(event.clientX, event.clientY);
@@ -157,6 +168,7 @@ function clearAll(){
     distance = [];
     cluster = [];
     counter = 0;
+    canSetDots = true;
 }
 
 canvas.addEventListener('click', startPos);

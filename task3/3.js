@@ -2,8 +2,15 @@ const elem = document.getElementById('plane');
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+let bestPath;
 let n = 0;
+let counter = 0;
 let mutationPercent = 50;
+let population = [];
+let fitness = [];
+let firstChild, secondChild;
+let cityDistance = []; //массив с расстояниями между городами
+let isFirstPopulation = true;
 
 function createVertex(parent, x, y) {
     const vertex = document.createElement('div');
@@ -14,7 +21,6 @@ function createVertex(parent, x, y) {
     parent.appendChild(vertex);
 }
 
-let cityDistance = []; //массив с расстояниями между городами
 function cityDistanceInitial() {
     for (let i=0; i<n; i++) {
         cityDistance[i]=[];
@@ -27,12 +33,14 @@ function cityDistanceInitial() {
     /*console.log(cityDistance)*/
 }
 
-function shuffle(array) { //перемешивает массив чисел
+//перемешивает массив чисел
+function shuffle(array) {
     for (let j, x, i = array.length; i; j = parseInt(Math.random() * i), x = array[--i], array[i] = array[j], array[j] = x) {}
     return true;
 }
-let population = [], fitness = [];
-function firstPopulation() { //создает начальную популяцию из 10ти особей
+
+//создает начальную популяцию
+function firstPopulation() {
     cityDistanceInitial();
 
     for (let i=0; i<n/2; i++) {
@@ -41,14 +49,18 @@ function firstPopulation() { //создает начальную популяц�
             population[i][j]=j;
         }
         shuffle(population[i]);
+        population[i].push(population[i][0]);
+        console.log("Population ", i);
+        console.log(population[i]);
         fitness[i]=individualFitness(population[i])
     }
 
-    /*console.log(population);
-    console.log(fitness);*/
+    //console.log(population);
+    //console.log(fitness);
 }
 
-function individualFitness(individual) { //считает приспособленность особи (длину маршрута)
+//считает приспособленность особи (длину маршрута)
+function individualFitness(individual) {
     let fitness = 0;
     for (let i=0; i<individual.length-1; i++) {
         fitness+=cityDistance[individual[i]][individual[i+1]];
@@ -57,9 +69,11 @@ function individualFitness(individual) { //считает приспособле
     return fitness;
 }
 
-function crossing(first, second) { //скрещивание
-    let breakingPoint = Math.floor(Math.random()*(n)); //выбор точки останова (что-то не так)
-    let firstChild = [], secondChild = [];
+//скрещивание
+function crossing(first, second) {
+    let breakingPoint = Math.floor(Math.random() * (n - 1) + 1); //выбор точки останова (что-то не так)
+    firstChild = [];
+    secondChild = [];
     for (let i=0; i<breakingPoint; i++) {
         firstChild[i]=first[i];
         secondChild[i]=second[i];
@@ -77,7 +91,7 @@ function crossing(first, second) { //скрещивание
     }
     for (let i = breakingPoint, j = breakingPoint; i<n && j<n; i++) {
         if (secondChild.findIndex( currentValue => currentValue === first[j] ) === -1)
-            secondChild[i]=first()[j++]
+            secondChild[i]=first[j++]
     }
     if (secondChild.length !== n) {
         for (let i=0; i<n; i++) {
@@ -86,6 +100,8 @@ function crossing(first, second) { //скрещивание
             }
         }
     }
+    firstChild.push(firstChild[0]);
+    secondChild.push(secondChild[0]);
     /*console.log(firstChild)
     console.log(secondChild)*/
 }
@@ -93,8 +109,8 @@ function crossing(first, second) { //скрещивание
 function mutation(individual) {
     let random = Math.floor(Math.random()*100);
     if (random<mutationPercent) {
-        let t1 = Math.floor(Math.random()*n);
-        let t2 = Math.floor(Math.random()*n);
+        let t1 = Math.floor(Math.random()*(n-1) + 1);
+        let t2 = Math.floor(Math.random()*(n-1) + 1);
         let t = individual[t1];
         individual[t1]=individual[t2];
         individual[t2]=t;
@@ -106,22 +122,57 @@ function mutation(individual) {
 function pathOutput(individual) {
     ctx.beginPath();
     for (let i=0; i<individual.length-1; i++) {
-        const from = document.getElementById(i);
-        const to = document.getElementById((i+1));
+        let from = document.getElementById(individual[i]);
+        let to = document.getElementById(individual[i+1]);
         ctx.moveTo(to.offsetLeft-60, to.offsetTop-60);
         ctx.lineTo(from.offsetLeft-60, from.offsetTop-60);
         ctx.stroke();
     }
+}
 
+function clearPaths() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-function compare(a, b) {
-    return fitness[a]-fitness[b];
-}
+/*function compare(a, b) {
+    return fitness[a] - fitness[b];
+}*/
+
 function genetic() {
-    firstPopulation();
-    console.log(population);
-    console.log(fitness);
+    if(isFirstPopulation) {
+        firstPopulation();
+        population.sort(function (a, b) {
+            return individualFitness(a) - individualFitness(b);
+        });
+        isFirstPopulation = false;
+    }
 
-    population.forEach(row => row.sort(compare));
-    console.log(population);
+    while(counter <  n*n*n && (bestPath === population[0] || bestPath === undefined)) {
+        bestPath = population[0];
+        let firstParent = Math.floor(Math.random() * population.length);
+        let secondParent = Math.floor(Math.random() * population.length);
+        crossing(population[firstParent], population[secondParent]);
+
+        firstChild = mutation(firstChild);
+        secondChild = mutation(secondChild);
+        population.push(firstChild)
+        population.push(secondChild);
+
+        population.sort(function (a, b) {
+            return individualFitness(a) - individualFitness(b);
+        });
+        population.pop();
+        population.pop();
+        console.log(population[0]);
+        console.log(individualFitness(population[0]));
+        if(bestPath === population[0]) {
+            counter++;
+        }
+        else{
+            counter = 0;
+        }
+        clearPaths();
+        pathOutput(population[0]);
+       // counter++;
+    }
+    bestPath = undefined;
 }
