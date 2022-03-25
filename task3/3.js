@@ -7,7 +7,6 @@ let n = 0;
 let counter = 0;
 let mutationPercent = 50;
 let population = [];
-let fitness = [];
 let firstChild, secondChild;
 let cityDistance = []; //массив с расстояниями между городами
 let isFirstPopulation = true;
@@ -15,7 +14,6 @@ let isFirstPopulation = true;
 function createVertex(parent, x, y) {
     const vertex = document.createElement('div');
     vertex.classList.add('round')
-    vertex.text
     vertex.textContent = n.toString();
     vertex.id = n++;
     vertex.style.top = y + "px";
@@ -54,7 +52,6 @@ function firstPopulation() {
         population[i].push(population[i][0]);
         console.log("Population ", i);
         console.log(population[i]);
-        fitness[i]=individualFitness(population[i])
     }
 
     //console.log(population);
@@ -130,6 +127,8 @@ function pathOutput(individual) {
         ctx.lineTo(from.offsetLeft-60, from.offsetTop-60);
         ctx.stroke();
     }
+    document.getElementById("bestCurPath").textContent = population[0];
+    document.getElementById("pathLen").textContent = individualFitness(population[0]);
 }
 
 function clearPaths() {
@@ -171,9 +170,25 @@ function genetic() {
         }
         clearPaths();
         pathOutput(population[0]);
-        document.getElementById("bestCurPath").textContent = population[0];
-        document.getElementById("pathLen").textContent = individualFitness(population[0]);
+
        // counter++;
     }
     bestPath = undefined;
+}
+function clearAll() {
+    document.getElementById("bestCurPath").textContent = "_";
+    document.getElementById("pathLen").textContent = "_";
+    clearPaths();
+    for (let i=0; i<n; i++) {
+        document.getElementById(i).remove();
+    }
+    bestPath = undefined;
+    n = 0;
+    counter = 0;
+    population = [];
+    cityDistance = [];
+    isFirstPopulation = true;
+    firstChild = [];
+    secondChild = [];
+    console.clear()
 }
