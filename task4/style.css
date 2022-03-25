@@ -1,0 +1,25 @@
+body {
+    background: url("img/background.jpg") no-repeat fixed center center;
+    background-size: cover;
+    font-family: Lucida Console, fantasy;
+    font-size: 10px;
+}
+
+#plane {
+    background-color: #f7fffc;
+    position: relative;
+    left:60px;
+    top:60px;
+    width: 600px;
+    height: 600px;
+    border: 4px solid #000000;
+}
+
+.round {
+    display: inline-block;
+    background-color: black;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: fixed;
+}
