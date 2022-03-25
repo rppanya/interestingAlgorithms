@@ -15,6 +15,8 @@ let isFirstPopulation = true;
 function createVertex(parent, x, y) {
     const vertex = document.createElement('div');
     vertex.classList.add('round')
+    vertex.text
+    vertex.textContent = n.toString();
     vertex.id = n++;
     vertex.style.top = y + "px";
     vertex.style.left = x + "px";
