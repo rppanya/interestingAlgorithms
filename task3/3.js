@@ -12,15 +12,18 @@ let cityDistance = []; //массив с расстояниями между г�
 let isFirstPopulation = true;
 
 function createVertex(parent, x, y) {
-    const vertex = document.createElement('div');
-    vertex.classList.add('round')
-    vertex.textContent = n.toString();
-    vertex.id = n++;
-    vertex.style.top = y + "px";
-    vertex.style.left = x + "px";
-    parent.appendChild(vertex);
+    if(isFirstPopulation) {
+        const vertex = document.createElement('div');
+        vertex.classList.add('round')
+        vertex.textContent = n.toString();
+        vertex.id = n++;
+        vertex.style.top = y + "px";
+        vertex.style.left = x + "px";
+        parent.appendChild(vertex);
+    }
 }
 
+//расстояния между вершинами графа
 function cityDistanceInitial() {
     for (let i=0; i<n; i++) {
         cityDistance[i]=[];
@@ -30,7 +33,6 @@ function cityDistanceInitial() {
             cityDistance[i][j]=parseInt(Math.sqrt(Math.pow(Math.abs(idJ.offsetTop-idI.offsetTop),2)+Math.pow(Math.abs(idJ.offsetLeft-idI.offsetLeft),2)));
         }
     }
-    /*console.log(cityDistance)*/
 }
 
 //перемешивает массив чисел
@@ -42,7 +44,6 @@ function shuffle(array) {
 //создает начальную популяцию
 function firstPopulation() {
     cityDistanceInitial();
-
     for (let i=0; i<n/2; i++) {
         population[i]=[];
         for (let j=0; j<n; j++) {
@@ -50,12 +51,7 @@ function firstPopulation() {
         }
         shuffle(population[i]);
         population[i].push(population[i][0]);
-        console.log("Population ", i);
-        console.log(population[i]);
     }
-
-    //console.log(population);
-    //console.log(fitness);
 }
 
 //считает приспособленность особи (длину маршрута)
@@ -101,10 +97,9 @@ function crossing(first, second) {
     }
     firstChild.push(firstChild[0]);
     secondChild.push(secondChild[0]);
-    /*console.log(firstChild)
-    console.log(secondChild)*/
 }
 
+//ну мутация лол)))
 function mutation(individual) {
     let random = Math.floor(Math.random()*100);
     if (random<mutationPercent) {
@@ -114,11 +109,11 @@ function mutation(individual) {
         individual[t1]=individual[t2];
         individual[t2]=t;
     }
-    /*console.log(individual);*/
     return individual;
 }
 
-function pathOutput(individual) {
+//рисует путь коммивояжера
+function pathOutput(individual, str = "") {
     ctx.beginPath();
     for (let i=0; i<individual.length-1; i++) {
         let from = document.getElementById(individual[i]);
@@ -127,14 +122,16 @@ function pathOutput(individual) {
         ctx.lineTo(from.offsetLeft-60, from.offsetTop-60);
         ctx.stroke();
     }
-    document.getElementById("bestCurPath").textContent = population[0];
-    document.getElementById("pathLen").textContent = individualFitness(population[0]);
+    document.getElementById("bestCurPath").textContent = population[0] + str;
+    document.getElementById("pathLen").textContent = individualFitness(population[0]).toString();
 }
 
+//стирает линии
 function clearPaths() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+//генетический алгоритм, работающий с одним новым поколением
 function genetic() {
     if(isFirstPopulation) {
         firstPopulation();
@@ -160,21 +157,23 @@ function genetic() {
         });
         population.pop();
         population.pop();
-        console.log(population[0]);
-        console.log(individualFitness(population[0]));
         if(bestPath === population[0]) {
             counter++;
+            if(counter === n * n * n){
+                clearPaths();
+                pathOutput(population[0], " - is the best individual");
+                return;
+            }
         }
         else{
             counter = 0;
         }
         clearPaths();
         pathOutput(population[0]);
-
-       // counter++;
     }
     bestPath = undefined;
 }
+
 function clearAll() {
     document.getElementById("bestCurPath").textContent = "_";
     document.getElementById("pathLen").textContent = "_";
