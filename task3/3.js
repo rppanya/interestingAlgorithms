@@ -161,7 +161,7 @@ function genetic() {
             counter++;
             if(counter === n * n * n){
                 clearPaths();
-                pathOutput(population[0], " - is the best individual");
+                pathOutput(population[0], " - is final best individual");
                 return;
             }
         }
