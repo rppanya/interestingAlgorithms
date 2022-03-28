@@ -44,7 +44,7 @@ function shuffle(array) {
 //создает начальную популяцию
 function firstPopulation() {
     cityDistanceInitial();
-    for (let i=0; i<n/2; i++) {
+    for (let i=0; i<n; i++) {
         population[i]=[];
         for (let j=0; j<n; j++) {
             population[i][j]=j;

@@ -1,0 +1,30 @@
+body {
+    background: url("../task1/img/back5.jpg") no-repeat center center fixed;
+    background-size: cover;
+    font-family: Lucida Console, fantasy;
+    font-size: 10px;
+}
+h2 {
+    position: absolute;
+    top:10px;
+    left:10px;
+    display: flex;
+    margin: auto;
+}
+#csv1 {
+    position: absolute;
+    top:30px;
+    left:10px;
+    width: 1490px;
+    height: 80px;
+
+}
+#inf {
+    position: relative;
+    top:10px;
+    width: 100%;
+    height: 150px;
+    background-color: white;
+    border-radius: 10px;
+
+}
