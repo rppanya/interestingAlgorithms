@@ -130,7 +130,10 @@ function pathOutput(individual, str = "") {
 function clearPaths() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-
+let timerId;
+function time() {
+    timerId = setInterval(genetic, 1000);
+}
 //генетический алгоритм, работающий с одним новым поколением
 function genetic() {
     if(isFirstPopulation) {
@@ -162,6 +165,7 @@ function genetic() {
             if(counter === n * n * n){
                 clearPaths();
                 pathOutput(population[0], " - is final best individual");
+                clearTimeout(timerId);
                 return;
             }
         }
