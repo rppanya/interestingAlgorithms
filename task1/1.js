@@ -146,7 +146,7 @@ function heuristic (map, start) {
 const pathOutput = (previous, finish) => {
     if (previous[finish] !== undefined) {
         let cur = document.getElementById(previous[finish])
-        if (cur.style.backgroundColor !== "green") {
+        if (cur.style.backgroundColor !== "green" && cur.style.backgroundColor !== "red") {
             cur.style.backgroundColor = "blue";
         }
         pathOutput(previous, previous[finish])
@@ -160,11 +160,11 @@ function clearMap(condition) {
         for (let i=0; i<all.length; i++) {
             all[i].style.backgroundColor="";
         }
-        /*document.getElementById("startX").value="";
+        start = 0; finish = 0;
+        document.getElementById("startX").value="";
         document.getElementById("startY").value="";
         document.getElementById("finishX").value="";
         document.getElementById("finishY").value="";
-*/ //очистка координат старта и финиша, проблема в том что createPath выводит путь из бывшего старта в бывший финиш
     } else if (condition==="path") {
         for (let i=0; i<all.length; i++) {
             if (all[i].style.backgroundColor==="blue") {
@@ -177,6 +177,11 @@ function clearMap(condition) {
 function aStar() {
     clearMap("path");
     document.getElementById("noPath").textContent = "";
+    if (finish<start) {
+        let t = finish;
+        finish = start;
+        start = t;
+    }
     let map=adjMatrix(createMatrix())
 
     let queue = [], visited = [], previous = [], fromStart = [];
