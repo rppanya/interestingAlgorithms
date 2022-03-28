@@ -1,6 +1,6 @@
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext("2d");
-canvas.height = 737;
+canvas.height = 693;
 canvas.width = 700;
 let points = [];
 let cluster = [];
@@ -72,11 +72,30 @@ function paintDot(px, py){
     ctx.beginPath();
 }
 
+function clearAll(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    points = [];
+    distance = [];
+    cluster = [];
+    counter = 0;
+    canSetDots = true;
+}
+
 //connect clusters with minimum distance between the nearest elements in them
-function connectMinDistClusters() {
+function connectMinDistClusters(clusterCount) {
     let diffSum = 0;
+    if(clusterCount === ""){
+        clusterCount = 0;
+    }
+    clusterCount = parseInt(clusterCount);
+
+    if(clusterCount > cluster.length && clusterCount !== 0){
+        alert("CLUSTERS COUNT IS BIGGER THEN DOTS COUNT");
+        return;
+    }
+
     let count = 0;
-    while(true) {
+    while(cluster.length !== clusterCount) {
         if(cluster.length > 1) {
             let curMin = new Minimum(distance[cluster[0][0].number][cluster[1][0].number], 0, 1);
             for (let i = 0; i < cluster.length - 1; i++) {
@@ -92,18 +111,20 @@ function connectMinDistClusters() {
                     }
                 }
             }
-            if (curMin.dist < 4 * (diffSum / count) || curMin.dist < 18000) {
-                for (let i = 0; i < cluster[curMin.num2].length; i++) {
-                    cluster[curMin.num1].push(cluster[curMin.num2][i]);
+
+                if (curMin.dist < 4 * (diffSum / count) || curMin.dist < 18000 || clusterCount !== 0) {
+                    for (let i = 0; i < cluster[curMin.num2].length; i++) {
+                        cluster[curMin.num1].push(cluster[curMin.num2][i]);
+                    }
+                    diffSum += curMin.dist;
+                    count++;
+                    cluster.splice(curMin.num2, 1);
+                } else {
+                    break;
                 }
-                diffSum += curMin.dist;
-                count++;
-                cluster.splice(curMin.num2, 1);
-            } else {
-                break;
-            }
+        } else {
+            break;
         }
-        else{break;}
    }
 
    for(let i = 0; i < cluster.length; i++){
@@ -134,7 +155,7 @@ function hierarchicalClustering(){
     if(canSetDots) {
         fillDists();
         countDists();
-        connectMinDistClusters();
+        connectMinDistClusters(document.getElementById("clCount").value);
     }
     canSetDots = false;
 }
@@ -160,15 +181,6 @@ function draw(event){
     ctx.lineTo(event.clientX, event.clientY);
     ctx.stroke();
     ctx.beginPath();
-}
-
-function clearAll(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    points = [];
-    distance = [];
-    cluster = [];
-    counter = 0;
-    canSetDots = true;
 }
 
 canvas.addEventListener('click', startPos);

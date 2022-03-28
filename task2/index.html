@@ -8,8 +8,12 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
-    <button onClick="hierarchicalClustering()" class="clust">CLUSTER</button>
-    <button onClick="clearAll()" class="clear">CLEAR</button>
+    <div>
+        <button onClick="hierarchicalClustering()" class="clust">CLUSTER</button>
+        <button onClick="clearAll()" class="clear">CLEAR</button>
+        <input type="number" id="clCount" placeholder="auto">
+        <label for="clCount">Enter clusters count</label>
+    </div>
     <script src='2.js'></script>
 </body>
 </html>
