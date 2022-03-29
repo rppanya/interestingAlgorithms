@@ -55,4 +55,5 @@ button:hover{
     height: 20px;
     border-radius: 50%;
     position: fixed;
+    user-select: none;
 }
