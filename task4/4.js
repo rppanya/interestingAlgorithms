@@ -32,7 +32,7 @@ function distanceInitial() {
 function pathLength() {
     let result = 0;
     for (let i = 0; i < n - 1; i++) {
-        // result += cityDistance[i][i+1];
+        result += cityDistance[i][i+1];
     }
     return result;
 }
@@ -58,41 +58,55 @@ function vertexSelection() {
     let unpavedVertices = [];
     for (let i = 0; i < n; i++) {
         if (!(i in path)) {
-            unpavedVertices = unpavedVertices.push(i);
+            unpavedVertices.push(i);
         }
     }
+    console.log(unpavedVertices);
     unpavedVertices.forEach(function(vertex) {
-        x = Math.pow(pheromones[path[-1]][vertex],ALPHA);
-        y = Math.pow(1/(distance[path[-1][vertex]]),BETA);
+        x = Math.pow(pheromones[path[path.length - 1]][vertex], ALPHA);
+        y = Math.pow(1/(distance[path[path.length - 1][vertex]]), BETA);
         sum += x*y;
     });
-    unpavedVertices.forEach(function(vertex) {
-        x = Math.pow(pheromones[path[-1]][vertex],ALPHA);
-        y = Math.pow(1/(distance[path[-1][vertex]]),BETA);
-        if (vertex !== 0) {
-            p[-1][vertex] = (x * y) / sum + p[-1][vertex - 1];
+
+    for(let i = 0; i < n; i++){
+        p[i] = [];
+    }
+
+    for(let i = 0; i < unpavedVertices.length; i++){
+        let vertex = unpavedVertices[i];
+        console.log(path);
+        x = Math.pow(pheromones[path[path.length - 1]][vertex],ALPHA);
+        y = Math.pow(1/(distance[path[path.length - 1]][vertex]),BETA);
+        if (vertex !== unpavedVertices[0]) {
+            p[path[path.length - 1]][vertex] = (x * y) / sum + p[path[path.length - 1]][unpavedVertices[i - 1]];
         }
         else {
-            p[-1][vertex] = (x * y) / sum;
+            p[path[path.length - 1]][vertex] = (x * y) / sum;
         }
-    });
+    }
     let rand = Math.random();
     unpavedVertices.forEach(function(vertex) {
-        if (rand < p[-1][vertex]) {
+        if (rand < p[path[path.length - 1]][vertex]) {
+            console.log("vagina");
             return vertex;
         }
     });
 }
 
 function updatePath() {
-    path = path.push(Math.floor(Math.random()*(n-1)));
+    path.push(Math.floor(Math.random()*(n)));
     while (path.length < n) {
-        path = path.push(vertexSelection());
+        path.push(vertexSelection());
     }
     return path;
 }
 
-function antColony() {
-
+function mainButton(){
+    distanceInitial();
+    pheromonesInitial();
+    console.log(distance);
+    console.log(pheromones);
+    updatePath();
+    console.log("PATH")
+    console.log(path);
 }
-
