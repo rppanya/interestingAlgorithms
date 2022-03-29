@@ -3,7 +3,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 let n = 0;
-const ALPHA = 1, BETA = 1;
+const ALPHA = 2, BETA = 2;
 let distance = [], pheromones = [], p = [], path = [];
 
 function createVertex(parent, x, y) {
@@ -56,25 +56,23 @@ function updatePheromones() {
 function vertexSelection() {
     let sum = 0, x = 0, y = 0;
     let unpavedVertices = [];
+    console.log(path);
     for (let i = 0; i < n; i++) {
-        if (!(i in path)) {
+        if (path.includes(i) === false) {
             unpavedVertices.push(i);
         }
     }
     console.log(unpavedVertices);
-    unpavedVertices.forEach(function(vertex) {
-        x = Math.pow(pheromones[path[path.length - 1]][vertex], ALPHA);
-        y = Math.pow(1/(distance[path[path.length - 1][vertex]]), BETA);
+    for (let i = 0; i < unpavedVertices.length; i++) {
+        x = Math.pow(pheromones[path[path.length - 1]][unpavedVertices[i]], ALPHA);
+        y = Math.pow(1/(distance[path[path.length - 1]][unpavedVertices[i]]), BETA);
         sum += x*y;
-    });
-
+    }
     for(let i = 0; i < n; i++){
         p[i] = [];
     }
-
     for(let i = 0; i < unpavedVertices.length; i++){
         let vertex = unpavedVertices[i];
-        console.log(path);
         x = Math.pow(pheromones[path[path.length - 1]][vertex],ALPHA);
         y = Math.pow(1/(distance[path[path.length - 1]][vertex]),BETA);
         if (vertex !== unpavedVertices[0]) {
@@ -85,16 +83,15 @@ function vertexSelection() {
         }
     }
     let rand = Math.random();
-    unpavedVertices.forEach(function(vertex) {
-        if (rand < p[path[path.length - 1]][vertex]) {
-            console.log("vagina");
-            return vertex;
+    for(let i = 0; i < unpavedVertices.length; i++){
+        if (rand <= p[path[path.length - 1]][unpavedVertices[i]]) {
+            return unpavedVertices[i];
         }
-    });
+    }
 }
 
 function updatePath() {
-    path.push(Math.floor(Math.random()*(n)));
+    path.push(Math.round(Math.random()*(n - 1)));
     while (path.length < n) {
         path.push(vertexSelection());
     }
@@ -106,7 +103,7 @@ function mainButton(){
     pheromonesInitial();
     console.log(distance);
     console.log(pheromones);
-    updatePath();
+    console.log(n);
     console.log("PATH")
-    console.log(path);
+    console.log(updatePath());
 }
