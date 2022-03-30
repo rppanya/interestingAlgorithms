@@ -5,14 +5,14 @@ const ctx = canvas.getContext("2d");
 let bestPath;
 let n = 0;
 let counter = 0;
-let mutationPercent = 50;
+let mutationPercent = 60;
 let population = [];
 let firstChild, secondChild;
 let cityDistance = []; //массив с расстояниями между городами
 let isFirstPopulation = true;
 
 function createVertex(parent, x, y) {
-    if(isFirstPopulation) {
+    if (isFirstPopulation) {
         const vertex = document.createElement('div');
         vertex.classList.add('round')
         vertex.textContent = n.toString();
@@ -44,7 +44,7 @@ function shuffle(array) {
 //создает начальную популяцию
 function firstPopulation() {
     cityDistanceInitial();
-    for (let i=0; i<n; i++) {
+    for (let i=0; i<n/2; i++) {
         population[i]=[];
         for (let j=0; j<n; j++) {
             population[i][j]=j;
@@ -132,10 +132,14 @@ function clearPaths() {
 }
 let timerId;
 function time() {
-    timerId = setInterval(genetic, 1000);
+    timerId = setInterval(genetic, 500);
 }
 //генетический алгоритм, работающий с одним новым поколением
 function genetic() {
+    if (n===0) {
+        clearTimeout(timerId);
+        return;
+    }
     if(isFirstPopulation) {
         firstPopulation();
         population.sort(function (a, b) {
@@ -162,7 +166,7 @@ function genetic() {
         population.pop();
         if(bestPath === population[0]) {
             counter++;
-            if(counter === n * n * n){
+            if(counter === n*n*n){
                 clearPaths();
                 pathOutput(population[0], " - is final best individual");
                 clearTimeout(timerId);

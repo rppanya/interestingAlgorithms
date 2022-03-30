@@ -36,8 +36,9 @@ function barriers(td) {
     }
 }
 
-let start, finish, finishX, finishY;
+let start, finish, finishX, finishY, startX, startY;
 function startPoint(x, y) {
+    startX=x; startY=y;
     let all=document.querySelectorAll('td');
     if (x!=="" && y!=="" && x>0 && y>0 && x<=Math.sqrt(all.length) && y<=Math.sqrt(all.length)) {
         for (let i=0; i<all.length; i++) {
@@ -171,6 +172,12 @@ function clearMap(condition) {
                 all[i].style.backgroundColor="";
             }
         }
+    } else if (condition ==="barriers") {
+        for (let i=0; i<all.length; i++) {
+            if (all[i].style.backgroundColor==="black") {
+                all[i].style.backgroundColor="";
+            }
+        }
     }
 }
 
@@ -223,6 +230,130 @@ function aStar() {
             }
         }
         visited[currentIndex]=true;
+    }
+}
+
+function maze(size) {
+    if (size<=0) {
+        return
+    }
+    clearMap('barriers')
+    clearMap('path')
+    let maze=[]
+    for (let i=0; i<size; i++) {
+        maze[i]=[]
+        for (let j=0; j<size; j++) {
+            maze[i][j]=1
+        }
+    }
+    let x, y
+    if (startX!==undefined && startY!==undefined) {
+        x = startX-1; y = startY-1
+    }
+    else {
+        x=Math.floor(Math.random()*size); y=Math.floor(Math.random()*size)
+    }
+
+    maze[x][y]=0
+
+    let check = []
+
+    if (y-2 >= 0) {
+        check.push( { x0: x, y0: y-2 });
+    }
+    if (y+2 < size) {
+        check.push({ x0: x, y0: y+2})
+    }
+    if (x-2 >= 0) {
+        check.push({ x0: x-2, y0: y})
+    }
+    if (x+2 < size) {
+        check.push({ x0: x+2, y0: y})
+    }
+
+    while (check.length > 0) {
+        let index = Math.floor(Math.random()*check.length)
+        x = check[index].x0
+        y = check[index].y0
+        maze[x][y]=0
+        check.splice(index, 1)
+        let direction = ["north", "south", "east", "west", "top", "bottom", "right", "left"]
+        while (direction.length>0) {
+            let dirIndex = Math.floor(Math.random()*direction.length)
+            switch (direction[dirIndex]) {
+                case "north" :
+                    if (y-2 >= 0 && maze[x][y-2]===0) {
+                        maze[x][y-1]=0
+                        direction.splice(0, direction.length)
+                    }
+                    break;
+                case "south" :
+                    if (y+2 < size && maze[x][y+2]===0) {
+                        maze[x][y+1]=0
+                        direction.splice(0, direction.length)
+                    }
+                    break;
+                case "east" :
+                    if (x-2 >= 0 && maze[x-2][y]===0) {
+                        maze[x-1][y]=0
+                        direction.splice(0, direction.length)
+                    }
+                    break;
+                case "west" :
+                    if (x+2 < size && maze[x+2][y]===0) {
+                        maze[x+1][y]=0
+                        direction.splice(0, direction.length)
+                    }
+                    break;
+                case "top" :
+                    if (y-1 === 0 && maze[x][y-1]===1) {
+                        maze[x][y-1]=0
+                        direction.splice(0, direction.length)
+                    }
+                    break;
+                case "bottom" :
+                    if (y+1 === size-1 && maze[x][y+1]===1) {
+                        maze[x][y+1]=0
+                        direction.splice(0, direction.length)
+                    }
+                    break;
+                case "right" :
+                    if (x+1 === size-1 && maze[x+1][y]===1) {
+                        maze[x+1][y]=0
+                        direction.splice(0, direction.length)
+                    }
+                    break;
+                case "left" :
+                    if (x-1 === 0 && maze[x-1][y]===1) {
+                        maze[x-1][y]=0
+                        direction.splice(0, direction.length)
+                    }
+                    break;
+            }
+            direction.splice(dirIndex, 1)
+        }
+
+        if (y-2 >= 0 && maze[x][y-2]===1) {
+            check.push( { x0: x, y0: y-2 });
+        }
+        if (y+2 < size && maze[x][y+2]===1) {
+            check.push({ x0: x, y0: y+2})
+        }
+        if (x-2 >= 0 && maze[x-2][y]===1) {
+            check.push({ x0: x-2, y0: y})
+        }
+        if (x+2 < size && maze[x+2][y]===1) {
+            check.push({ x0: x+2, y0: y})
+        }
+    }
+    console.log(maze)
+    for (let i=0; i<size; i++) {
+        for (let j=0; j<size; j++) {
+            let cur=document.getElementById(i*size+j)
+            if (maze[i][j]===1 && cur.style.backgroundColor==="") {
+                cur.style.backgroundColor="black"
+            }
+        }
     }
 }
 

@@ -3,6 +3,7 @@ body {
     background-size: cover;
     font-family: Lucida Console, fantasy;
     font-size: 10px;
+    font-weight: 700;
 }
 
 .poleText{
@@ -54,6 +55,7 @@ button {
     box-shadow: inset 0 0 0 3px #0e0e0e;
     background-color: transparent;
     height: 50px;
+    font-family: Lucida Console, fantasy;
 }
 button:hover{
     color: #fff;
