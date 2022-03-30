@@ -2,8 +2,9 @@ const elem = document.getElementById('plane');
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+let isFirst = true, minLen;
 let n = 0;
-const ALPHA = 2, BETA = 2;
+const ALPHA = 1, BETA = 2, EVAPORATION = 0.64;
 let distance = [], pheromones = [], p = [], path = [];
 
 function createVertex(parent, x, y) {
@@ -29,15 +30,15 @@ function distanceInitial() {
 }
 
 //длина пути
-function pathLength() {
-    let result = 0;
-    for (let i = 0; i < n - 1; i++) {
-        result += cityDistance[i][i+1];
+function pathLength(antPath) {
+    let pathLen = 0;
+    for(let i = 0; i < n - 1; i++){
+        pathLen += distance[antPath[i]][antPath[i+1]];
     }
-    return result;
+    return pathLen;
 }
 
-//феромоны
+//все феромоны 0,02
 function pheromonesInitial() {
     for (let i = 0; i < n ; i++) {
         pheromones[i]=[];
@@ -49,7 +50,12 @@ function pheromonesInitial() {
 
 //обновление феромонов
 function updatePheromones() {
-
+    for(let i = 0; i < n; i++){
+        for(let j = i + 1; j < n; j++){
+            pheromones[i][j] *= EVAPORATION;
+            pheromones[j][i] = pheromones[i][j];
+        }
+    }
 }
 
 //выбираем вершину, в которую пойдет муравей
@@ -61,6 +67,7 @@ function vertexSelection() {
             unpavedVertices.push(i);
         }
     }
+
     for (let i = 0; i < unpavedVertices.length; i++) {
         x = Math.pow(pheromones[path[path.length - 1]][unpavedVertices[i]], ALPHA);
         y = Math.pow(1/(distance[path[path.length - 1]][unpavedVertices[i]]), BETA);
@@ -69,6 +76,7 @@ function vertexSelection() {
     for(let i = 0; i < n; i++){
         p[i] = [];
     }
+
     for(let i = 0; i < unpavedVertices.length; i++){
         let vertex = unpavedVertices[i];
         x = Math.pow(pheromones[path[path.length - 1]][vertex],ALPHA);
@@ -83,24 +91,50 @@ function vertexSelection() {
     let rand = Math.random();
     for(let i = 0; i < unpavedVertices.length; i++){
         if (rand <= p[path[path.length - 1]][unpavedVertices[i]]) {
+            pheromones[path[path.length - 1]][unpavedVertices[i]] += 1 / distance[path[path.length - 1]][unpavedVertices[i]];
+            pheromones[unpavedVertices[i]][path[path.length - 1]] = pheromones[path[path.length - 1]][unpavedVertices[i]];
             return unpavedVertices[i];
         }
     }
 }
 
-function updatePath() {
+function oneAntCycle() {
     for (let k = 0; k < n; k++) {
         path.push(k);
         while (path.length < n) {
             path.push(vertexSelection());
         }
-        console.log(path);
+        path[path.length] = path[0];
+
+        let curLen = pathLength(path);
+        if(curLen < minLen || minLen === undefined) {
+            minLen = curLen;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pathOutput(path);
+            console.log(curLen);
+        }
         path = [];
     }
 }
 
+function pathOutput(antPath) {
+    ctx.beginPath();
+    for (let i = 0; i < antPath.length - 1; i++) {
+        let from = document.getElementById(antPath[i]);
+        let to = document.getElementById(antPath[i + 1]);
+        ctx.moveTo(to.offsetLeft - 60, to.offsetTop - 60);
+        ctx.lineTo(from.offsetLeft - 60, from.offsetTop - 60);
+        ctx.stroke();
+    }
+}
+
 function mainButton(){
-    distanceInitial();
-    pheromonesInitial();
-    updatePath();
+    if(isFirst) {
+        distanceInitial();
+        pheromonesInitial();
+        isFirst = false;
+    }
+
+    oneAntCycle();
+    console.log(pheromones);
 }
