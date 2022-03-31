@@ -2,10 +2,14 @@ const elem = document.getElementById('plane');
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-let isFirst = true, minLen;
+let isFirst = true, minLen, timer, curMin;
 let n = 0;
-const ALPHA = 1, BETA = 2, EVAPORATION = 0.64;
+const ALPHA = 1, BETA = 1, EVAPORATION = 0.64;
 let distance = [], pheromones = [], p = [], path = [];
+
+function time(){
+    timer = setInterval(mainButton, 100);
+}
 
 function createVertex(parent, x, y) {
     const vertex = document.createElement('div');
@@ -99,15 +103,15 @@ function vertexSelection() {
 }
 
 function oneAntCycle() {
+    curMin = minLen;
     for (let k = 0; k < n; k++) {
         path.push(k);
         while (path.length < n) {
             path.push(vertexSelection());
         }
         path[path.length] = path[0];
-
         let curLen = pathLength(path);
-        if(curLen < minLen || minLen === undefined) {
+        if (curLen < minLen || minLen === undefined) {
             minLen = curLen;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             pathOutput(path);
@@ -128,13 +132,16 @@ function pathOutput(antPath) {
     }
 }
 
-function mainButton(){
-    if(isFirst) {
-        distanceInitial();
-        pheromonesInitial();
-        isFirst = false;
-    }
-
-    oneAntCycle();
-    console.log(pheromones);
+function mainButton() {
+    //while(curMin === undefined || curMin === minLen) {
+        if (!isFirst) {
+            updatePheromones();
+        } else {
+            distanceInitial();
+            pheromonesInitial();
+            isFirst = false;
+        }
+        oneAntCycle();
+    //}
+    //console.log(pheromones);
 }
