@@ -2,7 +2,7 @@ const elem = document.getElementById('plane');
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-let isFirst = true, minLen, timer, curMin;
+let isFirst = true, minLen, timer, curMin, counter = 0;
 let n = 0;
 const ALPHA = 1, BETA = 1, EVAPORATION = 0.64;
 let distance = [], pheromones = [], p = [], path = [];
@@ -42,7 +42,6 @@ function pathLength(antPath) {
     return pathLen;
 }
 
-//все феромоны 0,02
 function pheromonesInitial() {
     for (let i = 0; i < n ; i++) {
         pheromones[i]=[];
@@ -52,7 +51,6 @@ function pheromonesInitial() {
     }
 }
 
-//обновление феромонов
 function updatePheromones() {
     for(let i = 0; i < n; i++){
         for(let j = i + 1; j < n; j++){
@@ -112,10 +110,17 @@ function oneAntCycle() {
         path[path.length] = path[0];
         let curLen = pathLength(path);
         if (curLen < minLen || minLen === undefined) {
+            counter = 0;
             minLen = curLen;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             pathOutput(path);
             console.log(curLen);
+        }
+        counter++;
+        if (counter > n*n*n) {
+            document.getElementById("bestCurPath").textContent += " - best of the best";
+            clearTimeout(timer);
+            return;
         }
         path = [];
     }
@@ -130,18 +135,40 @@ function pathOutput(antPath) {
         ctx.lineTo(from.offsetLeft - 60, from.offsetTop - 60);
         ctx.stroke();
     }
+    document.getElementById("bestCurPath").textContent = antPath;
+    document.getElementById("pathLen").textContent = pathLength(antPath).toString();
 }
 
 function mainButton() {
-    //while(curMin === undefined || curMin === minLen) {
-        if (!isFirst) {
+    if (isFirst) {
+        distanceInitial();
+        pheromonesInitial();
+        isFirst = false;
+    }
+    else {
+        while(counter < n*n*n && (curMin === undefined || curMin === minLen)) {
             updatePheromones();
-        } else {
-            distanceInitial();
-            pheromonesInitial();
-            isFirst = false;
+            oneAntCycle();
         }
-        oneAntCycle();
-    //}
-    //console.log(pheromones);
+    }
+}
+
+function clearPaths() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function clearAll() {
+    document.getElementById("bestCurPath").textContent = "_";
+    document.getElementById("pathLen").textContent = "_";
+    clearPaths();
+    for (let i=0; i<n; i++) {
+        document.getElementById(i.toString()).remove();
+    }
+    n = 0;
+    distance = [];
+    pheromones = [];
+    p = [];
+    path = [];
+    isFirst = true;
+    console.clear()
 }

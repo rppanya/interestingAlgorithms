@@ -33,6 +33,7 @@ body {
     height: 600px;
     border: 4px solid #000000;
 }
+
 #createPath {
     top:220px;
 }
@@ -57,10 +58,12 @@ button {
     height: 50px;
     font-family: Lucida Console, fantasy;
 }
+
 button:hover{
     color: #fff;
     background-color: #000000;
 }
+
 .round {
     display: inline-block;
     background-color: black;

@@ -7,10 +7,17 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <div class="dossier">
+            <p class="poleText">Best iteration path: </p>
+            <p class="poleText" id="bestCurPath">_</p>
+            <p class="poleText">Path length: </p>
+            <p class="poleText" id="pathLen">_</p>
+            <button id="mainBut" onmousedown="time()">MAIN</button>
+            <button id="clear" onmousedown="clearAll()">CLEAR</button>
+        </div>
         <div id="plane" onmousedown="createVertex(elem, event.clientX.valueOf(), event.clientY.valueOf())">
             <canvas id="canvas" width="600px" height="600px"></canvas>
         </div>
-        <button id="mainBut" onmousedown="time()">MAIN</button>
         <script src="4.js"></script>
     </body>
 </html>

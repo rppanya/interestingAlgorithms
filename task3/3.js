@@ -130,10 +130,12 @@ function pathOutput(individual, str = "") {
 function clearPaths() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+
 let timerId;
 function time() {
     timerId = setInterval(genetic, 500);
 }
+
 //генетический алгоритм, работающий с одним новым поколением
 function genetic() {
     if (n===0) {

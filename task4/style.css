@@ -3,10 +3,29 @@ body {
     background-size: cover;
     font-family: Lucida Console, fantasy;
     font-size: 10px;
+    font-weight: 700;
 }
 
 #mainBut{
-    left: 400px;
+    top:220px;
+}
+
+.poleText{
+    font-size: 20px;
+}
+
+.dossier {
+    display: inline-block;
+    overflow-wrap: break-word;
+    width: 400px;
+    height: 400px;
+    top: 70px;
+    background-color: #fff7f7;
+    box-shadow: 10px 10px 10px #b0b0b0;
+    border-radius: 20px;
+    padding: 20px;
+    position: absolute;
+    left: 850px;
 }
 
 button {
