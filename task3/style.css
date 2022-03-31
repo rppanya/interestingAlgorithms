@@ -1,5 +1,5 @@
 body {
-    background: url("img/back.jpg") no-repeat center center fixed;
+    background: url("img/greenBack.jpg") no-repeat center center fixed;
     background-size: cover;
     font-family: Lucida Console, fantasy;
     font-size: 10px;
@@ -17,7 +17,7 @@ body {
     height: 400px;
     top: 70px;
     background-color: #fff7f7;
-    box-shadow: 10px 10px 10px #b0b0b0;
+    box-shadow: 10px 10px 10px #a5ada0;
     border-radius: 20px;
     padding: 20px;
     position: absolute;
@@ -68,11 +68,11 @@ button:hover{
     display: inline-block;
     background-color: black;
     text-align: center;
-    line-height: 20px;
-    font-size: 15px;
+    line-height: 40px;
+    font-size: 25px;
     color: #f7fffc;
-    width: 20px;
-    height: 20px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     position: fixed;
     user-select: none;

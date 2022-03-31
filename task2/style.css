@@ -1,7 +1,6 @@
 body{
-    background-color: #D9AFD9;
-    background-image: linear-gradient(70deg, #f656f6 -20%, #66dcf3 100%);
-    background-size: 6152px 5000px;
+    background: url("img/perpleBack.jpg");
+    background-size: cover
 }
 
 .clear{

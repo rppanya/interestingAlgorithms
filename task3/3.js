@@ -2,10 +2,11 @@ const elem = document.getElementById('plane');
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+let timerId;
 let bestPath;
 let n = 0;
 let counter = 0;
-let mutationPercent = 60;
+let mutationPercent = 50;
 let population = [];
 let firstChild, secondChild;
 let cityDistance = []; //массив с расстояниями между городами
@@ -22,6 +23,8 @@ function createVertex(parent, x, y) {
         parent.appendChild(vertex);
     }
 }
+
+const equals = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 //расстояния между вершинами графа
 function cityDistanceInitial() {
@@ -44,7 +47,7 @@ function shuffle(array) {
 //создает начальную популяцию
 function firstPopulation() {
     cityDistanceInitial();
-    for (let i=0; i<n/2; i++) {
+    for (let i=0; i<n; i++) {
         population[i]=[];
         for (let j=0; j<n; j++) {
             population[i][j]=j;
@@ -66,7 +69,7 @@ function individualFitness(individual) {
 
 //скрещивание
 function crossing(first, second) {
-    let breakingPoint = Math.floor(Math.random() * (n - 1) + 1); //выбор точки останова (что-то не так)
+    let breakingPoint = Math.floor(Math.random() * (n - 1) + 1); //выбор точки останова
     firstChild = [];
     secondChild = [];
     for (let i=0; i<breakingPoint; i++) {
@@ -95,16 +98,16 @@ function crossing(first, second) {
             }
         }
     }
-    firstChild.push(firstChild[0]);
-    secondChild.push(secondChild[0]);
+    /*firstChild.push(firstChild[0]);
+    secondChild.push(secondChild[0]);*/
 }
 
 //ну мутация лол)))
 function mutation(individual) {
     let random = Math.floor(Math.random()*100);
     if (random<mutationPercent) {
-        let t1 = Math.floor(Math.random()*(n-1) + 1);
-        let t2 = Math.floor(Math.random()*(n-1) + 1);
+        let t1 = Math.floor(Math.random()*n);
+        let t2 = Math.floor(Math.random()*n);
         let t = individual[t1];
         individual[t1]=individual[t2];
         individual[t2]=t;
@@ -118,8 +121,8 @@ function pathOutput(individual, str = "") {
     for (let i=0; i<individual.length-1; i++) {
         let from = document.getElementById(individual[i]);
         let to = document.getElementById(individual[i+1]);
-        ctx.moveTo(to.offsetLeft-60, to.offsetTop-60);
-        ctx.lineTo(from.offsetLeft-60, from.offsetTop-60);
+        ctx.moveTo(to.offsetLeft-50, to.offsetTop-50);
+        ctx.lineTo(from.offsetLeft-50, from.offsetTop-50);
         ctx.stroke();
     }
     document.getElementById("bestCurPath").textContent = population[0] + str;
@@ -131,9 +134,8 @@ function clearPaths() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-let timerId;
 function time() {
-    timerId = setInterval(genetic, 500);
+    timerId = setInterval(genetic, 100);
 }
 
 //генетический алгоритм, работающий с одним новым поколением
@@ -150,25 +152,44 @@ function genetic() {
         isFirstPopulation = false;
     }
 
-    while(counter <  n*n*n && (bestPath === population[0] || bestPath === undefined)) {
+    while(counter <  n*n && (bestPath === population[0] || bestPath === undefined)) {
         bestPath = population[0];
+        let flag1 = true, flag2 = true, toDel = 0;
         let firstParent = Math.floor(Math.random() * population.length);
         let secondParent = Math.floor(Math.random() * population.length);
         crossing(population[firstParent], population[secondParent]);
 
         firstChild = mutation(firstChild);
         secondChild = mutation(secondChild);
-        population.push(firstChild)
-        population.push(secondChild);
+        firstChild.push(firstChild[0]);
+        secondChild.push(secondChild[0]);
+
+        for(let i = 0; i < population.length; i++){
+            if(equals(population[i], firstChild)){
+                flag1 = false;
+            }
+            if(equals(population[i], secondChild)){
+                flag2 = false;
+            }
+        }
+        if(flag1){
+            population.push(firstChild);
+            toDel++;
+        }
+        if(flag2){
+            population.push(secondChild);
+            toDel++;
+        }
 
         population.sort(function (a, b) {
             return individualFitness(a) - individualFitness(b);
         });
-        population.pop();
-        population.pop();
+        for(let k = 0; k < toDel; k++) {
+            population.pop();
+        }
         if(bestPath === population[0]) {
             counter++;
-            if(counter === n*n*n){
+            if(counter === n*n){
                 clearPaths();
                 pathOutput(population[0], " - is final best individual");
                 clearTimeout(timerId);
@@ -180,6 +201,7 @@ function genetic() {
         }
         clearPaths();
         pathOutput(population[0]);
+        console.log(population);
     }
     bestPath = undefined;
 }

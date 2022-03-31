@@ -5,7 +5,7 @@ html, body {
 body {
     font-family: 'Rubik', sans-serif;
     font-weight: 400;
-    background: url("img/photo-1579546929518-9e396f3cc809.avif") no-repeat fixed center center;
+    background: url("img/goldBack.jpg") no-repeat fixed center center;
     background-size: cover;
     display: flex;
     align-items: center;
@@ -29,8 +29,8 @@ body {
     margin: 25px;
     text-align: center;
     background-color: white;
-    color: #155799;
-    border: 2px solid #155799;
+    color: #000000;
+    border: 2px solid #000000;
     border-radius: 1em;
     transition-duration: 0.4s; /*speed of the "hover" effect*/
 }
@@ -38,7 +38,7 @@ body {
 .btn:hover { /*change the style of a button when you move the mouse over it*/
     transform: translateY(-0.25em);
     box-shadow: 0 0.5em 0.5em -0.4em;
-    background-color: #155799;
+    background-color: #000000;
     color: white;
     border: 2px solid white;
     border-radius: 1em;
