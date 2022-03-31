@@ -1,5 +1,4 @@
 const elem = document.getElementById('table');
-
 function createTable(parent, n) {
 
     let fc = parent.firstChild;
@@ -24,6 +23,11 @@ function createTable(parent, n) {
 
     }
     parent.appendChild(table);
+    document.getElementById('startX').max=Math.sqrt(counter)
+    document.getElementById('startY').max=Math.sqrt(counter)
+    document.getElementById('finishX').max=Math.sqrt(counter)
+    document.getElementById('finishY').max=Math.sqrt(counter)
+
 }
 
 function barriers(td) {
@@ -38,30 +42,47 @@ function barriers(td) {
 
 let start, finish, finishX, finishY, startX, startY;
 function startPoint(x, y) {
-    startX=x; startY=y;
+    clearMap("path")
     let all=document.querySelectorAll('td');
-    if (x!=="" && y!=="" && x>0 && y>0 && x<=Math.sqrt(all.length) && y<=Math.sqrt(all.length)) {
+    if (x!=="" && y!=="" && x<=Math.sqrt(all.length) && y<=Math.sqrt(all.length)) {
         for (let i=0; i<all.length; i++) {
             if (all[i].style.backgroundColor==="green") {
                 all[i].style.backgroundColor="";
             }
+            if (all[i].style.backgroundColor==="darkgreen") {
+                all[i].style.backgroundColor="black"
+            }
         }
         let p = document.getElementById(((y-1)+(x-1)*Math.sqrt(all.length)).toString());
-        p.style.backgroundColor="green";
+        if (p.style.backgroundColor==="black") {
+            p.style.backgroundColor="darkgreen";
+        }
+        else {
+            p.style.backgroundColor="green";
+        }
         start=(y-1)+(x-1)*Math.sqrt(all.length);
+        startX=x; startY=y;
     }
 }
 function finishPoint(x, y) {
+    clearMap("path")
     let all=document.querySelectorAll('td');
     if (x!=="" && y!=="" && x>0 && y>0 && x<=Math.sqrt(all.length) && y<=Math.sqrt(all.length)) {
-
         for (let i = 0; i < all.length; i++) {
             if (all[i].style.backgroundColor === "red") {
                 all[i].style.backgroundColor = "";
             }
+            if (all[i].style.backgroundColor === "darkred") {
+                all[i].style.backgroundColor = "black";
+            }
         }
         let p = document.getElementById(((y - 1) + (x - 1) * Math.sqrt(all.length)).toString());
-        p.style.backgroundColor = "red";
+        if (p.style.backgroundColor==="black") {
+            p.style.backgroundColor="darkred"
+        }
+        else {
+            p.style.backgroundColor = "red";
+        }
         finish = (y - 1) + (x - 1) * Math.sqrt(all.length);
         finishX = x - 1;
         finishY = y - 1;
@@ -147,7 +168,7 @@ function heuristic (map, start) {
 const pathOutput = (previous, finish) => {
     if (previous[finish] !== undefined) {
         let cur = document.getElementById(previous[finish])
-        if (cur.style.backgroundColor !== "green" && cur.style.backgroundColor !== "red") {
+        if (cur.style.backgroundColor !== "green" && cur.style.backgroundColor !== "darkgreen" && cur.style.backgroundColor !== "red" && cur.style.backgroundColor !== "darkred") {
             cur.style.backgroundColor = "blue";
         }
         pathOutput(previous, previous[finish])
@@ -304,7 +325,7 @@ function createMaze(n) {
             break
         }
     }
-    console.log(maze)
+
     for (let i=0; i<size; i++) {
         for (let j=0; j<size; j++) {
             let cur=document.getElementById(i*size+j)
