@@ -95,7 +95,6 @@ function createMatrix() {
     for (let i=0; i<matrix.length; i++) {
         matrix[i]=new Array(Math.sqrt(all.length));
     }
-
     for (let x=0; x<Math.sqrt(all.length); x++) {
         for (let y = 0; y<Math.sqrt(all.length); y++) {
             let p = document.getElementById(((y) + (x)*Math.sqrt(all.length)).toString());
@@ -133,10 +132,10 @@ function adjMatrix(matrix) {
                 }
                 if (i>1 && matrix[i-1][j]===1) {
                     adjMatrix[i*matrix.length+j][(i-1)*matrix.length+j]=1;
-                    adjMatrix[(i-1)*matrix.length+j][(i-1)*matrix.length+j]=1;
+                    adjMatrix[(i-1)*matrix.length+j][i*matrix.length+j]=1;
                 }
                 if (j>1 && matrix[i][j-1]===1) {
-                    adjMatrix[(i)*matrix.length+j][(i-1)*matrix.length+j-1]=1;
+                    adjMatrix[(i)*matrix.length+j][i*matrix.length+j-1]=1;
                     adjMatrix[(i)*matrix.length+j-1][(i)*matrix.length+j]=1;
                 }
             }
@@ -147,7 +146,7 @@ function adjMatrix(matrix) {
 
 function heuristic (map, start) {
     let sq = Math.sqrt(map.length);
-    let startX, startY;
+    let start_X, start_Y;
     let numberMatrix = new Array(sq);
     for (let i=0; i<sq; i++) {
         numberMatrix[i]=new Array(sq);
@@ -156,13 +155,13 @@ function heuristic (map, start) {
         for (let j=0; j<numberMatrix.length; j++) {
             numberMatrix[i][j]=i*numberMatrix.length+j
             if (numberMatrix[i][j] === start) {
-                startX = i;
-                startY = j;
+                start_X = i;
+                start_Y = j;
                 break;
             }
         }
     } //можно получить координаты элемента по id, без numberMatrix как-то
-    return Math.sqrt(Math.pow((startX - finishX),2)+ Math.pow((startY - finishY), 2));
+    return Math.abs(Math.pow((start_X - finishX),2)+ Math.pow((start_Y - finishY), 2));
 }
 
 const pathOutput = (previous, finish) => {
@@ -202,25 +201,19 @@ function clearMap(condition) {
     }
 }
 
+
 function aStar() {
     clearMap("path");
     document.getElementById("noPath").textContent = "";
-    if (finish<start) {
-        let t = finish;
-        finish = start;
-        start = t;
-    }
     let map=adjMatrix(createMatrix())
 
     let queue = [], visited = [], previous = [], fromStart = [];
-    for (let i=0; i<map.length; i++) {
-        queue[i]=1e9;
-    }  //массив с элементами, которые нужно посетить
-    queue[start]=heuristic(map, start);
 
     for (let i=0; i<map.length; i++) {
-        fromStart[i]=1e9;
-    }   //массив с расстояниями от старта
+        fromStart[i]=1e9; //массив с расстояниями от старта
+        queue[i]=1e9; //массив с элементами, которые нужно посетить
+    }
+    queue[start]=heuristic(map, start);
     fromStart[start] = 0;
 
     while(true) {
@@ -233,6 +226,9 @@ function aStar() {
             }
         }   //среди элементов очереди ищем элемент с наименьшим значением
         if (currentIndex === finish) {
+
+            console.log(previous)
+            console.log(queue)
             pathOutput(previous, finish);
             return;
         }
@@ -248,6 +244,7 @@ function aStar() {
                     fromStart[i] = fromStart[currentIndex] + 1;
                     queue[i] = fromStart[i] + heuristic(map, i);
                 }
+
             }
         }
         visited[currentIndex]=true;

@@ -11,18 +11,18 @@
         <div class="data">
             <div class="input-data" style="padding: 20px"><h2>Map size</h2></div>
             <div class="input-data"><label>
-                <input class="point" id="map-size" type="number" name="map-size" oninput="createTable(elem, this.value)">
+                <input class="point" id="map-size" type="number" name="map-size" min="0" oninput="createTable(elem, this.value)">
             </label></div>
             <div class="input-data" style="padding: 20px"><h2>Start point</h2></div>
             <div class="input-data"><label>
-                <input class="point" id="startX" type="number" name="card-size" min="0" oninput="startPoint(this.value, document.getElementById('startY').value)">
-                <input class="point" id="startY" type="number" name="card-size" min="0" oninput="startPoint(document.getElementById('startX').value, this.value)">
+                <input class="point" id="startX" type="number" name="card-size" min="1" oninput="startPoint(this.value, document.getElementById('startY').value)">
+                <input class="point" id="startY" type="number" name="card-size" min="1" oninput="startPoint(document.getElementById('startX').value, this.value)">
             </label>
             </div>
             <div class="input-data" style="padding: 20px"><h2>Finish point</h2></div>
             <div class="input-data"><label>
-                <input class="point" id="finishX" type="number" name="card-size" min="0" oninput="finishPoint(this.value, document.getElementById('finishY').value)">
-                <input class="point" id="finishY" type="number" name="card-size" min="0" oninput="finishPoint(document.getElementById('finishX').value, this.value)">
+                <input class="point" id="finishX" type="number" name="card-size" min="1" oninput="finishPoint(this.value, document.getElementById('finishY').value)">
+                <input class="point" id="finishY" type="number" name="card-size" min="1" oninput="finishPoint(document.getElementById('finishX').value, this.value)">
             </label>
             </div>
             <div style="padding: 20px"><h2>Indicate impassable points on the map</h2></div>
