@@ -187,6 +187,7 @@ function findOutput(queue) {
 }
 
 function clearMap(condition) {
+    clearInterval(timer)
     document.getElementById("noPath").textContent = "";
     let all=document.querySelectorAll("td");
     if (condition==="all"){
@@ -212,7 +213,7 @@ function clearMap(condition) {
         }
     }
 }
-
+let timer
 function aStar() {
     clearMap("path");
     document.getElementById("noPath").textContent = "";
@@ -227,7 +228,7 @@ function aStar() {
     queue[start]=heuristic(map, start);
     fromStart[start] = 0;
 
-    let timer = setInterval(() => {
+    timer = setInterval(() => {
         findOutput(queue)
         let current = 1e9;
         let currentIndex = -1;
