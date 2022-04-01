@@ -174,6 +174,18 @@ const pathOutput = (previous, finish) => {
     }
 };
 
+
+function findOutput(queue) {
+    for (let i=0; i<queue.length; i++) {
+        if (queue[i]<1e9) {
+            const cur = document.getElementById(i)
+            if (cur.style.backgroundColor==="") {
+                cur.style.backgroundColor="grey"
+            }
+        }
+    }
+}
+
 function clearMap(condition) {
     document.getElementById("noPath").textContent = "";
     let all=document.querySelectorAll("td");
@@ -188,7 +200,7 @@ function clearMap(condition) {
         document.getElementById("finishY").value="";
     } else if (condition==="path") {
         for (let i=0; i<all.length; i++) {
-            if (all[i].style.backgroundColor==="blue") {
+            if (all[i].style.backgroundColor==="blue" || all[i].style.backgroundColor==="grey") {
                 all[i].style.backgroundColor="";
             }
         }
@@ -200,7 +212,6 @@ function clearMap(condition) {
         }
     }
 }
-
 
 function aStar() {
     clearMap("path");
@@ -216,7 +227,8 @@ function aStar() {
     queue[start]=heuristic(map, start);
     fromStart[start] = 0;
 
-    while(true) {
+    let timer = setInterval(() => {
+        findOutput(queue)
         let current = 1e9;
         let currentIndex = -1;
         for (let i=0; i<queue.length; i++) {
@@ -226,14 +238,13 @@ function aStar() {
             }
         }   //среди элементов очереди ищем элемент с наименьшим значением
         if (currentIndex === finish) {
-
-            console.log(previous)
-            console.log(queue)
             pathOutput(previous, finish);
+            clearInterval(timer)
             return;
         }
         else if (currentIndex === -1) {
             document.getElementById("noPath").textContent = "No path"
+            clearInterval(timer)
             return;
         }
 
@@ -248,7 +259,7 @@ function aStar() {
             }
         }
         visited[currentIndex]=true;
-    }
+    }, 100)
 }
 
 let maze=[]
