@@ -1,4 +1,4 @@
-const elem = document.getElementById('table');
+const elem = document.getElementById('table')
 function createTable(parent, n) {
     clearMap('all')
     let fc = parent.firstChild

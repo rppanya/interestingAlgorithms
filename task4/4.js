@@ -14,7 +14,7 @@ function time(){
 }
 
 function createVertex(parent, x, y) {
-    if(isFirst) {
+    if(isFirst && x<635 && y<640) {
         const vertex = document.createElement('div');
         vertex.classList.add('round')
         vertex.textContent = n.toString();
