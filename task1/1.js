@@ -159,7 +159,6 @@ function createMaze(n) {
     }
 }
 
-
 function createMatrix() {
     let all = document.querySelectorAll('td')
     let matrix = new Array( Math.sqrt(all.length) )
