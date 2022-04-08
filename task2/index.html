@@ -7,13 +7,18 @@
     <title>CLUSTERING</title>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    <div>
-        <button onClick="hierarchicalClustering()" class="clust">CLUSTER</button>
-        <button onClick="clearAll()" class="clear">CLEAR</button>
-        <input type="number" id="clCount" placeholder="auto">
-        <label for="clCount">Enter clusters count</label>
-    </div>
+    <canvas id="canvas" class="canvas"></canvas>
+    <canvas id="canvas1" class="canvas"></canvas>
+    <canvas id="canvas2" class="canvas"></canvas>
+    <button onClick="mainBut()" class="clust">CLUSTER</button>
+    <button onClick="clearAll()" class="clear">CLEAR</button>
+    <input type="number" id="clCount">
+    <label for="clCount">Enter clusters count</label>
+    <p class="algoName" id="hierarchical">HIERARCHICAL</p>
+    <p class="algoName" id="spanning">MIN SPANNING TREE</p>
+    <p class="algoName" id="kMeans">K - MEANS</p>
+    <p id="colors">COLORS:</p>
+    <canvas id="showColors"></canvas>
     <script src='2.js'></script>
 </body>
 </html>

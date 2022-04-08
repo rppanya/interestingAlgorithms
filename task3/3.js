@@ -1,5 +1,5 @@
 const elem = document.getElementById('plane');
-const canvas = document.getElementById("canvas");
+const canvas = document.getElementById("canvasMain");
 const ctx = canvas.getContext("2d");
 
 let timerId;
@@ -98,8 +98,6 @@ function crossing(first, second) {
             }
         }
     }
-    /*firstChild.push(firstChild[0]);
-    secondChild.push(secondChild[0]);*/
 }
 
 //ну мутация лол)))

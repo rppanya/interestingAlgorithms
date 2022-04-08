@@ -1,5 +1,5 @@
 const elem = document.getElementById('plane');
-const canvas = document.getElementById("canvas");
+const canvas = document.getElementById("canvasMain");
 const ctx = canvas.getContext("2d");
 
 let isFirst = true, minLen, timer, curMin, counter = 0;

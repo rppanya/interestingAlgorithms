@@ -3,6 +3,7 @@ body {
     background-size: cover;
     font-family: Lucida Console, fantasy;
     font-size: 10px;
+    user-select: none;
 }
 .data {
     background-color: #fff9f6;

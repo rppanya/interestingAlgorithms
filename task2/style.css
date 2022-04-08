@@ -1,33 +1,28 @@
 body{
     background: url("img/perpleBack.jpg");
-    background-size: cover
+    background-size: cover; 
+    user-select: none;
 }
 
 .clear{
-    position: relative;
-    left:879px;
-    bottom: 270px;
+    position: absolute;
+    left:1330px;
+    bottom: 380px;
 }
 
 .clust{
-    position: relative;
-    left:1045px;
-    bottom: 369px;
-}
-
-div{
-    position: relative;
-    top: 0;
-    left: 0;
+    position: absolute;
+    left:1330px;
+    bottom: 450px;
 }
 
 label{
     font-weight: 700;
-    position: relative;
+    position: absolute;
     font-size: 17px;
     font-family: Candara, serif;
-    left: 578px;
-    bottom:514px;
+    left: 1336px;
+    bottom:600px;
 }
 
 input[type=number]{
@@ -39,10 +34,9 @@ input[type=number]{
     font-size: 17px;
     width: 140px;
     border-bottom: 1px solid black;
-    position: relative;
-    left: 727px;
-    bottom:470px;
-}
+    position: absolute;
+    left: 1340px;
+    bottom:550px}
 
 button{
     display: inline-block;
@@ -66,8 +60,63 @@ button:hover{
     background-color: #000000;
 }
 
-#canvas{
+.canvas{
     border: 4px solid #000000;
-    background-color: #f5e6ff;
-    background-image: linear-gradient(50deg, #f2bbfd 0%, #befffd 100%);
+    background-color: #ffecff;
+    width: 400px;
+    height: 400px;
+}
+
+#canvas1{
+    position: relative;
+    left: 15px;
+    background-color: transparent;
+}
+
+#canvas2{
+    position: relative;
+    left: 30px;
+    background-color: transparent;
+}
+
+.algoName{
+    font-family: Candara, serif;
+    font-weight: 700;
+    font-size: 40px;
+    width: fit-content;
+}
+
+#hierarchical{
+    position: relative;
+    left: 80px;
+    bottom: 20px;
+}
+
+#kMeans{
+    position: relative;
+    left: 970px;
+    bottom: 198px;
+}
+
+#spanning{
+    position: relative;
+    left: 455px;
+    bottom:109px;
+}
+
+#colors{
+    position: relative;
+    width: fit-content;
+    bottom: 50px;
+    font-family: Candara, serif;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+#showColors{
+    position: relative;
+    height: 30px;
+    width: 1300px;
+    left: 80px;
+    bottom:95px;
 }
