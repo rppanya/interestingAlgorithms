@@ -13,7 +13,7 @@ let cityDistance = []; //массив с расстояниями между г�
 let isFirstPopulation = true;
 
 function createVertex(parent, x, y) {
-    if (isFirstPopulation) {
+    if (isFirstPopulation && x<640 && y<640) {
         const vertex = document.createElement('div');
         vertex.classList.add('round')
         vertex.textContent = n.toString();
