@@ -126,11 +126,13 @@ function crossing(first, second) {
 function mutation(individual) {
     let random = Math.floor(Math.random() * 100)
     if (random < 50) { //процент мутаций = 50
-        let t1 = Math.floor(Math.random() * n)
-        let t2 = Math.floor(Math.random() * n)
-        let t = individual[t1]
-        individual[t1] = individual[t2]
-        individual[t2] = t
+        let t1 = Math.floor(Math.random() * individual.length)
+        let t2 = Math.floor(Math.random() * individual.length)
+        for (let i = 0; i < Math.abs(t1 - t2) / 2; i++) {
+            let t = individual[Math.min(t1, t2) + i]
+            individual[Math.min(t1, t2) + i] = individual[Math.max(t1, t2) - i]
+            individual[Math.max(t1, t2) - i] = t
+        }
     }
     return individual
 }
@@ -173,7 +175,7 @@ function genetic() {
         isFirstPopulation = false
     }
 
-    while( counter <  n * n * n && (bestPath === population[0] || bestPath === undefined)) {
+    while( counter <  n * n && (bestPath === population[0] || bestPath === undefined)) {
         bestPath = population[0]
 
         let firstParent = Math.floor(Math.random() * population.length)
@@ -182,7 +184,7 @@ function genetic() {
 
         if(bestPath === population[0]) {
             counter++
-            if(counter === n * n * n){
+            if(counter === n * n){
                 clearPaths()
                 pathOutput(population[0], ' - is final best individual')
                 clearTimeout(timerId)
@@ -210,5 +212,4 @@ function clearAll() {
     population = []
     cityDistance = []
     isFirstPopulation = true
-    console.clear()
 }
