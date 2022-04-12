@@ -10,10 +10,12 @@
     <canvas id="canvas" class="canvas"></canvas>
     <canvas id="canvas1" class="canvas"></canvas>
     <canvas id="canvas2" class="canvas"></canvas>
-    <button onClick="mainBut()" class="clust">CLUSTER</button>
-    <button onClick="clearAll()" class="clear">CLEAR</button>
-    <input type="number" id="clCount">
-    <label for="clCount">Enter clusters count</label>
+    <div>
+        <button onClick="mainBut()" class="clust">CLUSTER</button>
+        <button onClick="clearAll()" class="clear">CLEAR</button>
+        <input type="number" min="1" id="clCount">
+        <label for="clCount">Enter clusters count</label>
+    </div>
     <p class="algoName" id="hierarchical">HIERARCHICAL</p>
     <p class="algoName" id="spanning">MIN SPANNING TREE</p>
     <p class="algoName" id="kMeans">K - MEANS</p>

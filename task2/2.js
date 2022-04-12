@@ -78,7 +78,7 @@ function clearAll(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
     ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-    ctxColors.clearRect(0, 0, canvas2.width, canvas2.height);
+    ctxColors.clearRect(0, 0, canvasColors.width, canvasColors.height);
     points = [];
     distance = [];
     canSetDots = true;
@@ -344,7 +344,7 @@ function initialCentroids(centroid, clCount){
         }
         let rand = Math.floor(Math.random() * points.length);
         sum = 0;
-        for (let i = 1; i < points.length; i++) {
+        for (let i = 0; i < points.length; i++) {
             sum += euclideanDist(points[i], centroid[findNearestCentroidIndex(points[i], centroid)]);
             if(sum > rand){
                 centroid.push(points[i]);
@@ -368,7 +368,7 @@ function kMeansClustering(){
         }
         change = false;
 
-        for(let i = 0; i < k; i++){
+        for(let i = 0; i < centroid.length; i++){
             let newX = centroid[i].x, newY = centroid[i].y;
             oldCentroid[i] = new Point(newX, newY);
         }
