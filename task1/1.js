@@ -39,7 +39,7 @@ let start, finish, finishX, finishY
 function startPoint(x, y) {
     clearMap('path')
     let all = document.querySelectorAll('td')
-    if (x !== '' && y !== '' && x <= Math.sqrt(all.length) && y <= Math.sqrt(all.length)) {
+    if (x !== '' && y !== '') {
         for (let i = 0; i < all.length; i++) {
             if (all[i].style.backgroundColor === 'green') {
                 all[i].style.backgroundColor = ''
@@ -59,7 +59,7 @@ function startPoint(x, y) {
 function finishPoint(x, y) {
     clearMap('path')
     let all = document.querySelectorAll('td')
-    if (x !== '' && y !== '' && x > 0 && y > 0 && x <= Math.sqrt(all.length) && y <= Math.sqrt(all.length)) {
+    if (x !== '' && y !== '') {
         for (let i = 0; i < all.length; i++) {
             if (all[i].style.backgroundColor === 'red') {
                 all[i].style.backgroundColor = ''
@@ -81,12 +81,11 @@ function finishPoint(x, y) {
 
 
 let maze = []
-const cleaner = { //очиститель клетки, для создания лабиринта
+const cleaner = { //cage cleaner to create a maze
     x: 0,
     y: 0,
 }
-let size
-function moveCleaner() {
+function moveCleaner(size) {
     const directions = []
     if (cleaner.x > 0) {
         directions.push( [-2,0] )
@@ -116,8 +115,7 @@ function moveCleaner() {
         maze[cleaner.y - dy / 2][cleaner.x - dx / 2] = 0
     }
 }
-
-function stopCleaner() {
+function stopCleaner(size) {
     for (let y = 0; y < size; y += 2) {
         for (let x = 0; x < size; x += 2) {
             if (maze[y][x] === 1)
@@ -126,9 +124,8 @@ function stopCleaner() {
     }
     return true
 }
-
 function createMaze(n) {
-    size = n
+    const size = n
     if (size <= 0) {
         return
     }
@@ -143,8 +140,8 @@ function createMaze(n) {
 
     maze[cleaner.y][cleaner.x] = 0
     while(true) {
-        moveCleaner()
-        if (stopCleaner()) {
+        moveCleaner(size)
+        if (stopCleaner(size)) {
             break
         }
     }
@@ -158,6 +155,7 @@ function createMaze(n) {
         }
     }
 }
+
 
 function createMatrix() {
     let all = document.querySelectorAll('td')
@@ -178,7 +176,7 @@ function createMatrix() {
     return matrix
 }
 
-function adjMatrix(matrix) {
+function adjacencyMatrix(matrix) {
     let adjMatrix = new Array(matrix.length * matrix.length)
     for (let i = 0; i < adjMatrix.length; i++) {
         adjMatrix[i] = new Array(matrix.length * matrix.length)
@@ -274,13 +272,13 @@ let timer
 function aStar() {
     clearMap('path')
     document.getElementById('noPath').textContent = ''
-    let map = adjMatrix( createMatrix() )
+    let map = adjacencyMatrix( createMatrix() )
 
     let queue = [], visited = [], previous = [], fromStart = []
 
     for (let i=0; i<map.length; i++) {
-        fromStart[i] = 1e9 //массив с расстояниями от старта
-        queue[i] = 1e9 //массив с элементами, которые нужно посетить
+        fromStart[i] = 1e9 //array with distances from start
+        queue[i] = 1e9 //array with distances of elements to be visited
     }
     queue[start] = heuristic(map, start)
     fromStart[start] = 0
@@ -293,7 +291,8 @@ function aStar() {
                 current = queue[i]
                 currentIndex = i
             }
-        }   //среди элементов очереди ищем элемент с наименьшим значением
+        }
+
         if (currentIndex === finish) {
             pathOutput(previous, finish)
             clearInterval(timer)

@@ -5,17 +5,17 @@ const ctx = canvas.getContext('2d')
 let bestPath,
 n = 0, counter = 0,
 population = [],
-cityDistance = [], //массив с расстояниями между городами
+cityDistance = [],
 isFirstPopulation = true
 
 function createVertex(parent, x, y) {
-    if ( isFirstPopulation && x < 640 && y < 640) {
+    if ( isFirstPopulation && x < 650 && x > 80 && y > 80 && y < 650) {
         const vertex = document.createElement('div')
         vertex.classList.add('round')
         vertex.textContent = n.toString()
         vertex.id = n++
-        vertex.style.top = y + "px"
-        vertex.style.left = x + "px"
+        vertex.style.top = y - 10 + "px"
+        vertex.style.left = x - 10 + "px"
         parent.appendChild(vertex)
     }
 }
@@ -33,13 +33,11 @@ function cityDistanceInitial() {
     }
 }
 
-//перемешивает массив чисел
 function shuffle(array) {
     for (let j, x, i = array.length; i; j = parseInt(Math.random() * i), x = array[--i], array[i] = array[j], array[j] = x) {}
     return true
 }
 
-//создает начальную популяцию
 function firstPopulation() {
     cityDistanceInitial()
     for (let i = 0; i < n; i++) {
@@ -52,7 +50,7 @@ function firstPopulation() {
     }
 }
 
-//считает приспособленность особи (длину маршрута)
+//calculates fitness of an individual (route length)
 function individualFitness(individual) {
     let fitness = 0
     for (let i = 0; i < individual.length - 1; i++) {
@@ -61,9 +59,9 @@ function individualFitness(individual) {
     return fitness
 }
 
-//скрещивание и обновление особей в популяции
+//crossing and updating individuals in the population
 function crossing(first, second) {
-    let breakingPoint = Math.floor(Math.random() * (n - 1) + 1) //выбор точки останова
+    let breakingPoint = Math.floor(Math.random() * (n - 1) + 1) //choose a breakpoint
     let firstChild = [],  secondChild = []
 
     for (let i = 0; i < breakingPoint; i++) {
@@ -125,7 +123,7 @@ function crossing(first, second) {
 
 function mutation(individual) {
     let random = Math.floor(Math.random() * 100)
-    if (random < 50) { //процент мутаций = 50
+    if (random < 50) { //mutation percent = 50
         let t1 = Math.floor(Math.random() * individual.length)
         let t2 = Math.floor(Math.random() * individual.length)
         for (let i = 0; i < Math.abs(t1 - t2) / 2; i++) {
@@ -137,7 +135,6 @@ function mutation(individual) {
     return individual
 }
 
-//рисует путь коммивояжера
 function pathOutput(individual, str = '') {
     ctx.beginPath()
     for (let i = 0; i < individual.length - 1; i++) {
@@ -151,7 +148,6 @@ function pathOutput(individual, str = '') {
     document.getElementById('pathLen').textContent = individualFitness(population[0]).toString()
 }
 
-//стирает линии
 function clearPaths() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
@@ -161,7 +157,7 @@ function time() {
     timerId = setInterval(genetic, 100)
 }
 
-//генетический алгоритм, работающий с одним новым поколением
+//genetic algorithm that works with one new generation
 function genetic() {
     if (n === 0) {
         clearTimeout(timerId)
@@ -171,11 +167,11 @@ function genetic() {
         firstPopulation()
         population.sort(function (a, b) {
             return individualFitness(a) - individualFitness(b)
-        });
+        })
         isFirstPopulation = false
     }
 
-    while( counter <  n * n && (bestPath === population[0] || bestPath === undefined)) {
+    while( counter <  Math.pow(n, 2,5) && (bestPath === population[0] || bestPath === undefined)) {
         bestPath = population[0]
 
         let firstParent = Math.floor(Math.random() * population.length)
@@ -184,7 +180,7 @@ function genetic() {
 
         if(bestPath === population[0]) {
             counter++
-            if(counter === n * n){
+            if(counter === Math.pow(n, 2,5)){
                 clearPaths()
                 pathOutput(population[0], ' - is final best individual')
                 clearTimeout(timerId)
