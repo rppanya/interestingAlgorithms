@@ -171,7 +171,7 @@ function genetic() {
         isFirstPopulation = false
     }
 
-    while( counter <  Math.pow(n, 2,5) && (bestPath === population[0] || bestPath === undefined)) {
+    while( counter <  Math.pow(n, 2) && (bestPath === population[0] || bestPath === undefined)) {
         bestPath = population[0]
 
         let firstParent = Math.floor(Math.random() * population.length)
@@ -180,7 +180,7 @@ function genetic() {
 
         if(bestPath === population[0]) {
             counter++
-            if(counter === Math.pow(n, 2,5)){
+            if(counter === Math.pow(n, 2)){
                 clearPaths()
                 pathOutput(population[0], ' - is final best individual')
                 clearTimeout(timerId)
