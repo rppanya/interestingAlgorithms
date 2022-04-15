@@ -1,6 +1,6 @@
 body {
-    /*font-family: Lucida Console, fantasy;
-    font-size: 10px;*/
+    font-family: Lucida Console, fantasy;
+    font-size: 10px;
 }
 table td {
     padding: 40px;
@@ -13,10 +13,4 @@ table {
     border-spacing: 0;
 
 }
-/*canvas {
-    position: absolute;
-    top: 100px;
-    left: 100px;
-    border: 1px solid #ccc;
 
-}*/

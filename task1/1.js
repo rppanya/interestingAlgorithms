@@ -48,10 +48,12 @@ function startPoint(x, y) {
             }
         }
         let p = document.getElementById((y - 1) + (x - 1) * Math.sqrt(all.length))
-        if (p.style.backgroundColor === 'black') {
-            p.style.backgroundColor = 'darkgreen'
-        } else {
-            p.style.backgroundColor = 'green'
+        if (p.style.backgroundColor !== 'red' && p.style.backgroundColor !== 'darkred') {
+            if (p.style.backgroundColor === 'black') {
+                p.style.backgroundColor = 'darkgreen'
+            } else {
+                p.style.backgroundColor = 'green'
+            }
         }
         start = (y - 1) + (x - 1) * Math.sqrt(all.length)
     }
@@ -68,11 +70,14 @@ function finishPoint(x, y) {
             }
         }
         let p = document.getElementById((y - 1) + (x - 1) * Math.sqrt(all.length))
-        if (p.style.backgroundColor === 'black') {
-            p.style.backgroundColor = 'darkred'
-        } else {
-            p.style.backgroundColor = 'red'
+        if (p.style.backgroundColor !== 'green' && p.style.background !== 'darkgreen') {
+            if (p.style.backgroundColor === 'black') {
+                p.style.backgroundColor = 'darkred'
+            } else {
+                p.style.backgroundColor = 'red'
+            }
         }
+
         finish = (y - 1) + (x - 1) * Math.sqrt(all.length)
         finishX = x - 1
         finishY = y - 1
@@ -126,7 +131,7 @@ function stopCleaner(size) {
 }
 function createMaze(n) {
     const size = n
-    if (size <= 0) {
+    if (size <= 2) {
         return
     }
     clearMap('barriers')
@@ -248,8 +253,8 @@ function clearMap(condition) {
         for (let i = 0; i < all.length; i++) {
             all[i].style.backgroundColor = ''
         }
-        start = 0
-        finish = 0
+        start = undefined
+        finish = undefined
         for (let i = 0; i < 4; i++) {
             document.getElementsByClassName('point')[i].value = ''
         }
@@ -272,6 +277,9 @@ let timer
 function aStar() {
     clearMap('path')
     document.getElementById('noPath').textContent = ''
+    if (start === undefined || finish === undefined) {
+        document.getElementById('noPath').textContent = 'No path'
+    }
     let map = adjacencyMatrix( createMatrix() )
 
     let queue = [], visited = [], previous = [], fromStart = []

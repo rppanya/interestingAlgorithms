@@ -1,44 +1,38 @@
 body {
-    background: url("img/greenBack.jpg") no-repeat center center fixed;
+    background: url("../img/t3_back.jpg") no-repeat center center fixed;
     background-size: cover;
     font-family: Lucida Console, fantasy;
-    font-size: 10px;
+    font-size: 20px;
     font-weight: 700;
     user-select: none;
 }
 
-.poleText{
-    font-size: 20px;
-}
-
 .dossier {
-    display: inline-block;
+    position: absolute;
     overflow-wrap: break-word;
     width: 400px;
     height: 550px;
     top: 70px;
+    left: 850px;
     background-color: #fff7f7;
-    box-shadow: 10px 10px 10px #a5ada0;
+    box-shadow: 10px 10px 10px black;
     border-radius: 20px;
     padding: 20px;
-    position: absolute;
-    left: 850px;
 }
 
 #plane {
+    display: inline-block;
     background-color: #ffffff;
     position: relative;
-    left:60px;
-    top:60px;
+    left: 60px;
+    top: 60px;
     width: 600px;
     height: 600px;
     border: 4px solid #000000;
 }
-
 #createPath {
-    top:360px;
+    top: 360px;
 }
-
 button {
     display: block;
     position: absolute;
