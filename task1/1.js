@@ -85,42 +85,7 @@ function finishPoint(x, y) {
 }
 
 
-let maze = []
-const cleaner = { //cage cleaner to create a maze
-    x: 0,
-    y: 0,
-}
-function moveCleaner(size) {
-    const directions = []
-    if (cleaner.x > 0) {
-        directions.push( [-2,0] )
-    }
-    if (cleaner.x < size - 1) {
-        if (cleaner.x + 2 >= size) {
-            maze[cleaner.y][cleaner.x + 1] = 0
-        } else {
-            directions.push( [2,0] )
-        }
-    }
-    if (cleaner.y > 0){
-        directions.push( [0,-2] )
-    }
-    if (cleaner.y < size - 1) {
-        if (cleaner.y + 2 >= size) {
-            maze[cleaner.y + 1][cleaner.x] = 0
-        } else {
-            directions.push( [0,2] )
-        }
-    }
-    const [dx, dy] = directions[Math.floor(Math.random() * directions.length)]
-    cleaner.x += dx
-    cleaner.y += dy
-    if (maze[cleaner.y][cleaner.x] === 1) {
-        maze[cleaner.y][cleaner.x] = 0
-        maze[cleaner.y - dy / 2][cleaner.x - dx / 2] = 0
-    }
-}
-function stopCleaner(size) {
+function stopCleaner(size, maze) {
     for (let y = 0; y < size; y += 2) {
         for (let x = 0; x < size; x += 2) {
             if (maze[y][x] === 1)
@@ -129,28 +94,56 @@ function stopCleaner(size) {
     }
     return true
 }
-function createMaze(n) {
-    const size = n
+function createMaze(size) {
     if (size <= 2) {
         return
     }
+
     clearMap('barriers')
     clearMap('path')
+
+    const cleaner = { x: 0, y: 0 }
+    let maze = []
     for (let i = 0; i < size; i++) {
         maze[i] = []
         for (let j = 0; j < size; j++) {
             maze[i][j] = 1
         }
     }
-
     maze[cleaner.y][cleaner.x] = 0
     while (true) {
-        moveCleaner(size)
-        if (stopCleaner(size)) {
+        const directions = []
+        if (cleaner.x > 0) {
+            directions.push( [-2,0] )
+        }
+        if (cleaner.x < size - 1) {
+            if (cleaner.x + 2 >= size) {
+                maze[cleaner.y][cleaner.x + 1] = 0
+            } else {
+                directions.push( [2,0] )
+            }
+        }
+        if (cleaner.y > 0){
+            directions.push( [0,-2] )
+        }
+        if (cleaner.y < size - 1) {
+            if (cleaner.y + 2 >= size) {
+                maze[cleaner.y + 1][cleaner.x] = 0
+            } else {
+                directions.push( [0,2] )
+            }
+        }
+        const [dx, dy] = directions[Math.floor(Math.random() * directions.length)]
+        cleaner.x += dx
+        cleaner.y += dy
+        if (maze[cleaner.y][cleaner.x] === 1) {
+            maze[cleaner.y][cleaner.x] = 0
+            maze[cleaner.y - dy / 2][cleaner.x - dx / 2] = 0
+        }
+        if (stopCleaner(size, maze)) {
             break
         }
     }
-
     for (let i = 0; i < size; i++) {
         for (let j = 0; j < size; j++) {
             let cur = document.getElementById(i * size + j)

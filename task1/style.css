@@ -33,6 +33,7 @@ table {
     margin: auto;
 }
 #table {
+    display: inline-block;
     width: 75%;
     padding: 30px;
 }
