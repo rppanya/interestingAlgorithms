@@ -9,7 +9,7 @@ cityDistance = [],
 isFirstPopulation = true
 
 function createVertex(parent, x, y) {
-    if ( isFirstPopulation && x < 650 && x > 80 && y > 80 && y < 650) {
+    if ( isFirstPopulation && x < 640 && x > 80 && y > 80 && y < 640) {
         const vertex = document.createElement('div')
         vertex.classList.add('round')
         vertex.textContent = n.toString()

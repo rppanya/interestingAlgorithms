@@ -90,7 +90,7 @@ function moveCleaner(size) {
     if (cleaner.x > 0) {
         directions.push( [-2,0] )
     }
-    if (cleaner.x < size-1) {
+    if (cleaner.x < size - 1) {
         if (cleaner.x + 2 >= size) {
             maze[cleaner.y][cleaner.x + 1] = 0
         } else {
@@ -139,7 +139,7 @@ function createMaze(n) {
     }
 
     maze[cleaner.y][cleaner.x] = 0
-    while(true) {
+    while (true) {
         moveCleaner(size)
         if (stopCleaner(size)) {
             break
