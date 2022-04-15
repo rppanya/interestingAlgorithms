@@ -392,8 +392,6 @@ function kMeansClustering(){
 
 
 function mainBut(){
-    document.getElementById("canvas2").style.backgroundColor = 'white';
-    document.getElementById("canvas1").style.backgroundColor = 'white';
     if(points.length === 0){
         alert("INSERT DOTS");
         return;
@@ -411,6 +409,8 @@ function mainBut(){
         kMeansClustering();
         showColors();
     }
+    document.getElementById("canvas2").style.backgroundColor = 'white';
+    document.getElementById("canvas1").style.backgroundColor = 'white';
 }
 
 canvas.addEventListener('click', startPos);
