@@ -14,8 +14,9 @@ function createVertex(parent, x, y) {
         vertex.classList.add('round')
         vertex.textContent = n.toString()
         vertex.id = n++
-        vertex.style.top = y - 10 + "px"
-        vertex.style.left = x - 10 + "px"
+        vertex.style.position = 'absolute'
+        vertex.style.top = y - 80 + "px"
+        vertex.style.left = x - 80 + "px"
         parent.appendChild(vertex)
     }
 }
@@ -140,8 +141,8 @@ function pathOutput(individual, str = '') {
     for (let i = 0; i < individual.length - 1; i++) {
         let from = document.getElementById(individual[i])
         let to = document.getElementById(individual[i+1])
-        ctx.moveTo(to.offsetLeft - 50, to.offsetTop - 50)
-        ctx.lineTo(from.offsetLeft - 50, from.offsetTop - 50)
+        ctx.moveTo(to.offsetLeft + 20 , to.offsetTop + 20)
+        ctx.lineTo(from.offsetLeft + 20, from.offsetTop + 20)
         ctx.stroke()
     }
     document.getElementById('bestCurPath').textContent = population[0] + str

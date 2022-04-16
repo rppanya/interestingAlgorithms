@@ -14,13 +14,14 @@ function time(){
 }
 
 function createVertex(parent, x, y) {
-    if(isFirst && x<635 && y<640) {
-        const vertex = document.createElement('div');
+    if(isFirst && x<635 && y<640 && x>80 && y>80) {
+        const vertex = document.createElement('div')
         vertex.classList.add('round')
         vertex.textContent = n.toString();
         vertex.id = n++;
-        vertex.style.top = y + "px";
-        vertex.style.left = x + "px";
+        vertex.style.position = 'absolute'
+        vertex.style.top = y - 80 + "px";
+        vertex.style.left = x - 80 + "px";
         parent.appendChild(vertex);
     }
 }
@@ -133,8 +134,8 @@ function pathOutput(antPath) {
     for (let i = 0; i < antPath.length - 1; i++) {
         let from = document.getElementById(antPath[i]);
         let to = document.getElementById(antPath[i + 1]);
-        ctx.moveTo(to.offsetLeft - 50, to.offsetTop - 50);
-        ctx.lineTo(from.offsetLeft - 50, from.offsetTop - 50);
+        ctx.moveTo(to.offsetLeft + 20, to.offsetTop + 20);
+        ctx.lineTo(from.offsetLeft + 20, from.offsetTop + 20);
         ctx.stroke();
     }
     document.getElementById("bestCurPath").textContent = antPath;
