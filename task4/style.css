@@ -8,7 +8,7 @@ body {
 }
 
 #mainBut{
-    top:220px;
+    top:360px;
 }
 
 .poleText{
@@ -16,37 +16,37 @@ body {
 }
 
 .dossier {
-    display: inline-block;
+    position: absolute;
     overflow-wrap: break-word;
     width: 400px;
-    height: 400px;
+    height: 550px;
     top: 70px;
+    left: 850px;
     background-color: #fff7f7;
-    box-shadow: 10px 10px 10px #9b6a7e;
+    box-shadow: 10px 10px 10px black;
     border-radius: 20px;
     padding: 20px;
-    position: absolute;
-    left: 850px;
 }
 
 button {
     display: block;
     position: absolute;
     margin: auto;
-    top: 350px; left: 20px; bottom: 0; right: 20px;
+    top: 490px; left: 20px; bottom: 0; right: 20px;
     cursor: pointer;
     font-size: 14px;
     border-radius: 500px;
     transition-duration: .3s;
     border: 1px solid transparent;
     letter-spacing: 4px;
-    min-width: 260px;
+    min-width: 160px;
     font-weight: 700;
     text-align: center;
     color: #000000;
     box-shadow: inset 0 0 0 3px #0e0e0e;
     background-color: transparent;
     height: 50px;
+    font-family: Lucida Console, fantasy;
 }
 button:hover{
     color: #fff;
