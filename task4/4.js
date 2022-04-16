@@ -40,10 +40,10 @@ function distanceInitial() {
 //длина пути
 function pathLength(antPath) {
     let pathLen = 0;
-        for (let i = 0; i < antPath.length - 1; i++) {
-            pathLen += distance[antPath[i]][antPath[i + 1]];
-        }
-        return pathLen;
+    for (let i = 0; i < antPath.length - 1; i++) {
+        pathLen += distance[antPath[i]][antPath[i + 1]];
+    }
+    return pathLen;
 }
 
 function pheromonesInitial() {
@@ -73,34 +73,34 @@ function vertexSelection() {
             unpavedVertices.push(i);
         }
     }
-        for (let i = 0; i < unpavedVertices.length; i++) {
-            x = Math.pow(pheromones[path[path.length - 1]][unpavedVertices[i]], ALPHA);
-            y = Math.pow(1 / (distance[path[path.length - 1]][unpavedVertices[i]]), BETA);
-            sum += x * y;
-        }
-        for (let i = 0; i < n; i++) {
-            p[i] = [];
-        }
+    for (let i = 0; i < unpavedVertices.length; i++) {
+        x = Math.pow(pheromones[path[path.length - 1]][unpavedVertices[i]], ALPHA);
+        y = Math.pow(1 / (distance[path[path.length - 1]][unpavedVertices[i]]), BETA);
+        sum += x * y;
+    }
+    for (let i = 0; i < n; i++) {
+        p[i] = [];
+    }
 
-        for (let i = 0; i < unpavedVertices.length; i++) {
-            let vertex = unpavedVertices[i];
-            x = Math.pow(pheromones[path[path.length - 1]][vertex], ALPHA);
-            y = Math.pow(1 / (distance[path[path.length - 1]][vertex]), BETA);
-            if (vertex !== unpavedVertices[0]) {
-                p[path[path.length - 1]][vertex] = (x * y) / sum + p[path[path.length - 1]][unpavedVertices[i - 1]];
-            } else {
-                if (path[path.length - 1] !== undefined)
+    for (let i = 0; i < unpavedVertices.length; i++) {
+        let vertex = unpavedVertices[i];
+        x = Math.pow(pheromones[path[path.length - 1]][vertex], ALPHA);
+        y = Math.pow(1 / (distance[path[path.length - 1]][vertex]), BETA);
+        if (vertex !== unpavedVertices[0]) {
+            p[path[path.length - 1]][vertex] = (x * y) / sum + p[path[path.length - 1]][unpavedVertices[i - 1]];
+        } else {
+            if (path[path.length - 1] !== undefined)
                     p[path[path.length - 1]][vertex] = (x * y) / sum;
-            }
         }
-        let rand = Math.random();
-        for (let i = 0; i < unpavedVertices.length; i++) {
-            if (rand <= p[path[path.length - 1]][unpavedVertices[i]]) {
-                pheromones[path[path.length - 1]][unpavedVertices[i]] += 1 / distance[path[path.length - 1]][unpavedVertices[i]];
-                pheromones[unpavedVertices[i]][path[path.length - 1]] = pheromones[path[path.length - 1]][unpavedVertices[i]];
-                return unpavedVertices[i];
-            }
+    }
+    let rand = Math.random();
+    for (let i = 0; i < unpavedVertices.length; i++) {
+        if (rand <= p[path[path.length - 1]][unpavedVertices[i]]) {
+            pheromones[path[path.length - 1]][unpavedVertices[i]] += 1 / distance[path[path.length - 1]][unpavedVertices[i]];
+            pheromones[unpavedVertices[i]][path[path.length - 1]] = pheromones[path[path.length - 1]][unpavedVertices[i]];
+            return unpavedVertices[i];
         }
+    }
 }
 
 function oneAntCycle() {
